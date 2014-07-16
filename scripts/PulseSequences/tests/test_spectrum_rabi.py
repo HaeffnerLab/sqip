@@ -1,6 +1,6 @@
 from labrad.units import WithUnit
 from common.okfpgaservers.pulser.pulse_sequences.plot_sequence import SequencePlotter
-from sqip.scripts.PulseSequences.spectrum_rabi import spectrum_rabi 
+from sqip.scripts.PulseSequences.spectrum_rabi_PI import spectrum_rabi_PI
 
 class test_parameters(object):
     
@@ -54,8 +54,18 @@ class test_parameters(object):
               ('SidebandCoolingPulsed','sideband_cooling_pulsed_duration_additional_866'):WithUnit(10, 'us'),
               ('SidebandCoolingPulsed','sideband_cooling_pulsed_duration_between_pulses'):WithUnit(5, 'us'),
        
-              ('Heating','background_heating_time'):WithUnit(1.0, 'ms'),
-              ('Heating','ontrap_laser_duration'):WithUnit(2.0, 'ms'),
+              ('Heating','background_heating_time'):WithUnit(0.0, 'ms'),
+              ('Heating','ontrap_laser_duration'):WithUnit(0.0, 'ms'),
+              ('Heating', 'ontrap_laser_duration'):WithUnit(0.0, 'ms'),
+              ('Heating','ontrap_laser_amplitude'):WithUnit(-8.0, 'dBm'),
+              ('Heating','ontrap_laser_frequency'):WithUnit(110.0, 'MHz'),
+              ('Heating', 'resonant_heating_duration'):WithUnit(0.0, 'ms'),
+              ('Heating', 'resonant_heating_repump_additional'):WithUnit(40.0,'ns'),
+              ('Heating', 'resonant_heating_amplitude_397'):WithUnit(-5.0, 'dBm'),
+              ('Heating', 'resonant_heating_frequency_397'):WithUnit(220.0, 'MHz'),
+              ('Heating', 'resonant_heating_frequency_866'):WithUnit(80.0, 'MHz'),
+              ('Heating', 'resonant_heating_amplitude_866'):WithUnit(-8.0, 'dBm'),
+              ('Heating', 'coherent_evolution_time'):WithUnit(0.25, 'ms'),
               
               ('Excitation_729','rabi_excitation_frequency'):WithUnit(10.0, 'MHz'),
               ('Excitation_729','rabi_excitation_amplitude'):WithUnit(-3.0, 'dBm'),
@@ -98,7 +108,7 @@ if __name__ == '__main__':
 #        else:
 #            print 'key not needed', key
     tinit = time.time()
-    cs = spectrum_rabi(d)
+    cs = spectrum_rabi_PI(d)
     cs.programSequence(cxn.pulser)
     print 'to program', time.time() - tinit
     cxn.pulser.start_number(10)

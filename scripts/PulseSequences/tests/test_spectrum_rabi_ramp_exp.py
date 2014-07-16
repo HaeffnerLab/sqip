@@ -1,6 +1,6 @@
 from labrad.units import WithUnit
 from common.okfpgaservers.pulser.pulse_sequences.plot_sequence import SequencePlotter
-from sqip.scripts.PulseSequences.FastChange_DAC_voltages import fast_change_dacs
+from sqip.scripts.PulseSequences.spectrum_rabi_ramp import spectrum_rabi_ramp
 
 
 class test_parameters(object):
@@ -111,7 +111,7 @@ def main():
 #        else:
 #            print 'key not needed', key
     tinit = time.time()
-    cs = fast_change_dacs(d)
+    cs = spectrum_rabi_ramp(d)
     cs.programSequence(cxn.pulser)
     print 'to program', time.time() - tinit
     cxn.pulser.start_number(1000)

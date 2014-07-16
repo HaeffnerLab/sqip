@@ -11,7 +11,7 @@ class test_parameters(object):
               ('DACcontrol','enable_ramp'):True,
               ('DACcontrol','num_steps'):125,
               ('DACcontrol','time_down'):WithUnit(2, 'ms'),
-              ('DACcontrol','time_up'):WithUnit(17, 'ms'),
+              ('DACcontrol','time_up'):WithUnit(10, 'ms'),
               ('DACcontrol','wait_time'):WithUnit(200, 'ms'),
               ('DACcontrol','dac_pulse_length'):WithUnit(.1, 'us'),
  #             ('DACcontrol','dac_pulse_length'):WithUnit(.05, 's'),
@@ -104,10 +104,13 @@ def main():
     cs = fast_change_impulse(d)
     cs.programSequence(cxn.pulser)
     print 'to program', time.time() - tinit
-    cxn.pulser.start_number(64000)
-    cxn.pulser.switch_manual('adv')
-    cxn.pulser.switch_manual('rst')
-
+    cxn.pulser.start_number(140)
+    cxn.pulser.wait_sequence_done()
+    cxn.pulser.stop_sequence()
+    cxn.pulser.switch_auto('adv',False)
+    cxn.pulser.switch_auto('rst',False)
+    cxn.pulser.switch_manual('adv',True)
+    cxn.pulser.switch_manual('adv',False)
     
 if __name__ == '__main__':
         main()

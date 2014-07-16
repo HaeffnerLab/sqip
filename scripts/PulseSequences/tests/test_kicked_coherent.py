@@ -16,15 +16,15 @@ class test_parameters(object):
               ('DopplerCooling', 'doppler_cooling_repump_additional'):WithUnit(40, 'ns'),
               ('DopplerCooling', 'doppler_cooling_duration'):WithUnit(1.0,'ms'),
               
-              ('Heating', 'resonant_heating_duration'):WithUnit(0.2,'ms'),
+              ('Heating', 'resonant_heating_duration'):WithUnit(100.,'us'),
               ('Heating', 'resonant_heating_repump_additional'):WithUnit(40.0,'ns'),
               ('Heating', 'resonant_heating_amplitude_397'):WithUnit(-5.0, 'dBm'),
               ('Heating', 'resonant_heating_frequency_397'):WithUnit(220.0, 'MHz'),
               ('Heating', 'resonant_heating_frequency_866'):WithUnit(80.0, 'MHz'),
               ('Heating', 'resonant_heating_amplitude_866'):WithUnit(-8.0, 'dBm'),
-              ('Heating', 'coherent_evolution_time'):WithUnit(1.0,'ms'),
+              ('Heating', 'coherent_evolution_time'):WithUnit(100.,'us'),
               
-              ('OpticalPumping','optical_pumping_enable'):False,
+              ('OpticalPumping','optical_pumping_enable'):True,
               ('OpticalPumping','optical_pumping_frequency_729'):WithUnit(0.0, 'MHz'),
               ('OpticalPumping','optical_pumping_frequency_854'):WithUnit(80.0, 'MHz'),
               ('OpticalPumping','optical_pumping_frequency_866'):WithUnit(80.0, 'MHz'),
@@ -66,7 +66,7 @@ class test_parameters(object):
               ('StateReadout','state_readout_amplitude_397'):WithUnit(-13.0, 'dBm'),
               ('StateReadout','state_readout_frequency_866'):WithUnit(80.0, 'MHz'),
               ('StateReadout','state_readout_amplitude_866'):WithUnit(-11.0, 'dBm'),
-              ('StateReadout','state_readout_duration'):WithUnit(3.0,'ms'),
+              ('StateReadout','state_readout_duration'):WithUnit(0.25,'ms'),
               ('StateReadout','use_camera_for_readout'):False,
                   
               ('Tomography', 'rabi_pi_time'):WithUnit(50.0, 'us'),

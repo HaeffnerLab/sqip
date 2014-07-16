@@ -1,13 +1,13 @@
 from common.abstractdevices.script_scanner.scan_methods import experiment
-from sqip.scripts.PulseSequences.spectrum_rabi_ramp import spectrum_rabi_ramp
+from sqip.scripts.PulseSequences.spectrum_rabi_PI import spectrum_rabi_PI
 from sqip.scripts.scriptLibrary.common_methods_729 import common_methods_729 as cm
 from sqip.scripts.experiments.Camera.ion_fitting import linear_chain_fitter
 import numpy
 import time
        
-class excitation_729_ramp(experiment):
+class excitation_729_PI(experiment):
     
-    name = 'Excitation729Ramp'  
+    name = 'Excitation729Kicked'  
     required_parameters = [('OpticalPumping','frequency_selection'),
                            ('OpticalPumping','manual_frequency_729'),
                            ('OpticalPumping','line_selection'),
@@ -25,6 +25,7 @@ class excitation_729_ramp(experiment):
                            ('StateReadout', 'state_readout_threshold'),
                            ('StateReadout', 'use_camera_for_readout'),
                            ('StateReadout', 'state_readout_duration'),
+                           ('StateReadout','state_readout_amplitude_SPARE'), #
                            
                            ('IonsOnCamera','ion_number'),
                            ('IonsOnCamera','vertical_min'),
@@ -42,7 +43,7 @@ class excitation_729_ramp(experiment):
                            ('IonsOnCamera','fit_sigma'),
                            ('IonsOnCamera','fit_spacing'),
                            ]
-    pulse_sequence = spectrum_rabi_ramp
+    pulse_sequence = spectrum_rabi_PI
     required_parameters.extend(pulse_sequence.required_parameters)
     #removing pulse sequence items that will be calculated in the experiment and do not need to be loaded
     required_parameters.remove(('OpticalPumping', 'optical_pumping_frequency_729'))
@@ -119,9 +120,7 @@ class excitation_729_ramp(experiment):
         self.parameters['SidebandCooling.sideband_cooling_frequency_729'] = sideband_cooling_frequency
     
     def setup_initial_switches(self):
-        #self.pulser.switch_auto('global397',  False) #high TTL corresponds to light OFF
         self.pulser.switch_auto('866DP', False) #high TTL corresponds to light OFF
-        #self.pulser.switch_manual('crystallization',  False)
         #switch off 729 at the beginning
         self.pulser.output('729DP', False)
         
@@ -211,6 +210,6 @@ if __name__ == '__main__':
     import labrad
     cxn = labrad.connect()
     scanner = cxn.scriptscanner
-    exprt = excitation_729_ramp(cxn = cxn)
+    exprt = excitation_729_PI(cxn = cxn)
     ident = scanner.register_external_launch(exprt.name)
     exprt.execute(ident)

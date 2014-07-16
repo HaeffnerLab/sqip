@@ -3,6 +3,7 @@ from subsequences.RepumpDwithDoppler import doppler_cooling_after_repump_d
 from subsequences.OpticalPumping import optical_pumping
 from subsequences.Tomography import tomography_readout
 from subsequences.SidebandCooling import sideband_cooling
+from subsequences.StateReadout import state_readout
 from subsequences.TurnOffAll import turn_off_all
 from subsequences.ResonantHeating import resonant_heating
 from subsequences.EmptySequence import empty_sequence
@@ -93,6 +94,27 @@ class kicked_coherent(pulse_sequence):
                              ]
     
     def sequence(self):
+#        p = self.parameters
+#        st = self.parameters.StateReadout
+#        self.end = WithUnit(10, 'us')
+#        self.addSequence(turn_off_all)
+#        self.addSequence(doppler_cooling_after_repump_d)
+#        if p.OpticalPumping.optical_pumping_enable:
+#            self.addSequence(optical_pumping)
+#        if p.SidebandCooling.sideband_cooling_enable:
+#            self.addSequence(sideband_cooling)
+#        #self.addSequence(resonant_heating)
+#        self.addSequence(empty_sequence, TreeDict.fromdict({'EmptySequence.empty_sequence_duration':p.Heating.coherent_evolution_time}))
+#        self.start_record_timetags = self.end
+#        self.addTTL('ReadoutCount', self.start_record_timetags, p.Heating.resonant_heating_duration)
+#        self.addSequence(resonant_heating)
+#        #self.addSequence(tomography_readout)
+#
+#        #record timetags the whole time
+#        self.timetag_record_duration = self.end - self.start_record_timetags
+#        self.addTTL('TimeResolvedCount', self.start_record_timetags, self.timetag_record_duration)
+        
+        
         p = self.parameters
         self.end = WithUnit(10, 'us')
         self.addSequence(turn_off_all)

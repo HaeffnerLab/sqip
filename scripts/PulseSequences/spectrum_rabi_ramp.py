@@ -8,9 +8,10 @@ from subsequences.TurnOffAll import turn_off_all
 from subsequences.SidebandCooling import sideband_cooling
 from labrad.units import WithUnit
 from treedict import TreeDict
-from subsequences.resetDACs import reset_DACs
-from subsequences.forward_rampU2 import forward_ramp_U2
-from subsequences.back_rampU2 import back_ramp_U2
+from subsequences.advanceDACs import advanceDACs
+from subsequences.resetDACs import resetDACs
+import labrad
+import time
 
 class spectrum_rabi_ramp(pulse_sequence):
     
@@ -25,6 +26,7 @@ class spectrum_rabi_ramp(pulse_sequence):
                             
                             ('DACcontrol','U2target'),
                             ('DACcontrol','enable_ramp'),
+                            ('DACcontrol','wait_time'),
                             ('DACcontrol','num_steps'),
                             ('DACcontrol','time_down'),
                             ('DACcontrol','time_up'),
@@ -92,7 +94,8 @@ class spectrum_rabi_ramp(pulse_sequence):
                             ]
     
     
-    required_subsequences = [doppler_cooling_after_repump_d, empty_sequence, optical_pumping, 
+    required_subsequences = [turn_off_all, advanceDACs, resetDACs,
+                             doppler_cooling_after_repump_d, empty_sequence, optical_pumping, 
                              rabi_excitation, tomography_readout, turn_off_all, sideband_cooling]
 
     def sequence(self):
@@ -104,18 +107,68 @@ class spectrum_rabi_ramp(pulse_sequence):
             self.addSequence(optical_pumping)
         if p.SidebandCooling.sideband_cooling_enable:
             self.addSequence(sideband_cooling)
-            
-        # ramp down if toggled
-        if(p.enable_ramp):
-            self.addSequence(forward_ramp_U2)
-            
         self.addSequence(empty_sequence, TreeDict.fromdict({'EmptySequence.empty_sequence_duration':p.Heating.background_heating_time}))
-        
-        if(p.enable_ramp):
-            self.addSequence(back_ramp_U2)
+        self.dac_ramp()
         self.addSequence(rabi_excitation)
         self.addSequence(tomography_readout)
-        
-        if(p.enable_ramp):
-            self.addSequence(reset_DACs)
             
+        
+    def dac_ramp(self):    
+        p = self.parameters
+        tot_time = p.DACcontrol.time_up
+        time_at_top = tot_time-12
+         
+        i = 0
+        cxn = labrad.connect()
+        current_multipoles =cxn.dac_server.get_multipole_values()
+        currentU2 = dict(current_multipoles)['U2']
+        targetU2 = p.DACcontrol.U2target
+        amplitude = (targetU2 - currentU2)
+        readfromfile = True;
+        v = []
+        f= ''
+        print 'C:\Users\expcontrol\Downloads\\' +str(int(time_at_top)) +'msec_at_top.txt'
+        if(readfromfile):
+            z= 'C:\Users\expcontrol\Downloads\\' +str(int(time_at_top)) +'msec_at_top.txt'
+            print z
+            f = open(z,'r')
+                
+        for line in f:
+            #print line
+            try:
+                temp= float(line)
+              
+                v.append(temp*amplitude+currentU2)
+            except ValueError:
+                print 'error'
+        
+        print f
+        #v = range(126)
+        time.sleep(2)
+            
+        if(readfromfile):
+            print 'yp'
+            while i < p.DACcontrol.num_steps:
+                cxn.dac_server.set_next_u2(v[i])
+                i= i+1  
+            cxn.dac_server.set_next_u2(currentU2)
+        else:   
+            pass  
+        
+        print cxn.dac_server.get_analog_voltages()
+        print 'Setting U2 to:', p.DACcontrol.U2target
+        self.end = WithUnit(10, 'us')
+        
+        # ramp down if toggled
+        if(p.DACcontrol.enable_ramp):
+            print 'enabled'
+            self.addSequence(advanceDACs)
+        print 'finished advance' 
+        
+        print cxn.dac_server.get_analog_voltages()
+        if(p.DACcontrol.enable_ramp):
+            print 'enabled'
+            cxn.dac_server.reset_queue()
+            self.addSequence(resetDACs)
+        print 'end'
+        f.close()

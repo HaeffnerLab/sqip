@@ -102,7 +102,7 @@ class fast_change_impulse(pulse_sequence):
         p = self.parameters
         import labrad
         cxn = labrad.connect()
-        electrode_dict = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21']
+        electrode_dict = ['06']
         i = 0
         while i <1:
             for elect in electrode_dict:
