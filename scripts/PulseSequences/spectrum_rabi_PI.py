@@ -78,7 +78,7 @@ class spectrum_rabi_PI(pulse_sequence):
                             ('StateReadout','state_readout_amplitude_866'),
                             ('StateReadout','state_readout_duration'),
                             ('StateReadout','use_camera_for_readout'),
-                            ('StateReadout','state_readout_amplitude_SPARE'), #
+                            #('StateReadout','state_readout_amplitude_SPARE'), #
                             
                             ('Tomography', 'rabi_pi_time'),
                             ('Tomography', 'iteration'),

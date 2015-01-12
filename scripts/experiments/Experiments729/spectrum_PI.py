@@ -59,7 +59,7 @@ class spectrum_PI(experiment):
         self.init_pulsing_freq = self.square_pulse_generator.frequency()
         self.init_pulsing_state = self.square_pulse_generator.output()
         print self.square_pulse_generator.output()
-        self.square_pulse_generator.frequency(self.parameters.Heating.resonant_kicking_frequency)
+        self.square_pulse_generator.frequency(self.parameters.Heating.ontrap_laser_frequency)
         #self.square_pulse_generator.burst_mode('gated')
         #self.square_pulse_generator.burst_state(True)
         if self.parameters.Heating.enable_kicking:

@@ -12,7 +12,7 @@ class state_readout(pulse_sequence):
                 ('StateReadout','state_readout_frequency_866'), 
                 ('StateReadout','state_readout_amplitude_866'), 
                 ('StateReadout','state_readout_duration'),
-                ('StateReadout','use_camera_for_readout'),
+                ('StateReadout','use_camera_for_readout'),                
                 ]
 
     required_subsequences = [doppler_cooling]
@@ -25,6 +25,7 @@ class state_readout(pulse_sequence):
                    'DopplerCooling.doppler_cooling_frequency_866':st.state_readout_frequency_866,
                    'DopplerCooling.doppler_cooling_amplitude_866':st.state_readout_amplitude_866,
                    'DopplerCooling.doppler_cooling_duration':st.state_readout_duration,
+                   
                    }
         self.addSequence(doppler_cooling, TreeDict.fromdict(replace))
         self.addTTL('ReadoutCount', self.start, st.state_readout_duration)

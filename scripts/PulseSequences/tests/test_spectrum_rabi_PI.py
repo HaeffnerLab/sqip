@@ -14,7 +14,7 @@ class test_parameters(object):
               ('DopplerCooling', 'doppler_cooling_frequency_866'):WithUnit(80.0, 'MHz'),
               ('DopplerCooling', 'doppler_cooling_amplitude_866'):WithUnit(-11.0, 'dBm'),
               ('DopplerCooling', 'doppler_cooling_repump_additional'):WithUnit(100, 'us'),
-              ('DopplerCooling', 'doppler_cooling_duration'):WithUnit(1.0,'ms'),
+              ('DopplerCooling', 'doppler_cooling_duration'):WithUnit(5.0,'ms'),
               
               ('OpticalPumping','optical_pumping_enable'):True,
               ('OpticalPumping','optical_pumping_frequency_729'):WithUnit(0.0, 'MHz'),
@@ -25,8 +25,8 @@ class test_parameters(object):
               ('OpticalPumping','optical_pumping_amplitude_866'):WithUnit(-11.0, 'dBm'),
               ('OpticalPumping','optical_pumping_type'):'continuous',
               
-              ('OpticalPumpingContinuous','optical_pumping_continuous_duration'):WithUnit(1, 'ms'),
-              ('OpticalPumpingContinuous','optical_pumping_continuous_repump_additional'):WithUnit(200, 'us'),
+              ('OpticalPumpingContinuous','optical_pumping_continuous_duration'):WithUnit(2, 'ms'),
+              ('OpticalPumpingContinuous','optical_pumping_continuous_repump_additional'):WithUnit(500, 'us'),
               
               ('OpticalPumpingPulsed','optical_pumping_pulsed_cycles'):2.0,
               ('OpticalPumpingPulsed','optical_pumping_pulsed_duration_729'):WithUnit(20, 'us'),
@@ -54,8 +54,8 @@ class test_parameters(object):
               ('SidebandCoolingPulsed','sideband_cooling_pulsed_duration_additional_866'):WithUnit(10, 'us'),
               ('SidebandCoolingPulsed','sideband_cooling_pulsed_duration_between_pulses'):WithUnit(5, 'us'),
        
-              ('Heating','background_heating_time'):WithUnit(0.0, 'ms'),
-              ('Heating','ontrap_laser_duration'):WithUnit(2.0, 'ms'),
+              ('Heating','background_heating_time'):WithUnit(2.0, 'ms'),
+              ('Heating','ontrap_laser_duration'):WithUnit(10, 'ms'),
               ('Heating','ontrap_laser_amplitude'):WithUnit(-5.0, 'dBm'),
               ('Heating','ontrap_laser_frequency'):WithUnit(110.0, 'MHz'),
               ('Heating', 'resonant_heating_duration'):WithUnit(0.0, 'ms'),
@@ -75,7 +75,7 @@ class test_parameters(object):
               ('StateReadout','state_readout_amplitude_397'):WithUnit(-5.0, 'dBm'),
               ('StateReadout','state_readout_frequency_866'):WithUnit(80.0, 'MHz'),
               ('StateReadout','state_readout_amplitude_866'):WithUnit(-11.0, 'dBm'),
-              ('StateReadout','state_readout_duration'):WithUnit(3.0,'ms'),
+              ('StateReadout','state_readout_duration'):WithUnit(5.0,'ms'),
               ('StateReadout','state_readout_amplitude_SPARE'):WithUnit(-63.0, 'dBm'),
               ('StateReadout','use_camera_for_readout'):False,
                   

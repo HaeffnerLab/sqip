@@ -25,7 +25,7 @@ class excitation_729_PI(experiment):
                            ('StateReadout', 'state_readout_threshold'),
                            ('StateReadout', 'use_camera_for_readout'),
                            ('StateReadout', 'state_readout_duration'),
-                           ('StateReadout','state_readout_amplitude_SPARE'), #
+                           #('StateReadout','state_readout_amplitude_SPARE'), #
                            
                            ('IonsOnCamera','ion_number'),
                            ('IonsOnCamera','vertical_min'),

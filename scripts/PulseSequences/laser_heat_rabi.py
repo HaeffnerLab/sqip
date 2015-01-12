@@ -15,6 +15,8 @@ class laser_heat_rabi(pulse_sequence):
                         ('SidebandCooling','sideband_cooling_enable'),
 
                         ('Heating', 'ontrap_laser_duration'),
+                        ('Heating','ontrap_laser_amplitude'),
+                        ('Heating','ontrap_laser_frequency'),
 
                         ('RepumpD_5_2','repump_d_duration'),
                         ('RepumpD_5_2','repump_d_frequency_854'),
