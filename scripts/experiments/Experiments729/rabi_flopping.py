@@ -24,6 +24,8 @@ class rabi_flopping(experiment):
                            ('RabiFlopping','rabi_amplitude_729'),
                            ('RabiFlopping','frequency_selection'),
                            ('RabiFlopping','sideband_selection'),
+                           
+                           ('Amplitude729Scaling', 'Amplitude729ScaleFactor'),
                            ]
     required_parameters.extend(trap_frequencies)
     optional_parmeters = [
