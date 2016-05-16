@@ -2,6 +2,10 @@ import time
         
 class TDSMeasure():
     
+    '''
+        Point measurements with TDS1002B 
+    '''
+    
     def __init__(self):
         self.experimentPath = ['SimpleMeasurements', 'TDSMeasure']
         self.d = {
@@ -22,11 +26,11 @@ class TDSMeasure():
         print 'Started: {}'.format(self.experimentPath)
         import labrad
         self.cxn = cxn = labrad.connect()
-        self.sem = cxn.semaphore
+        #self.sem = cxn.semaphore
         self.dv = cxn.data_vault
         self.tek = cxn.tektronix_server
         print self.tek.list_devices()
-        self.tek.select_device('sqip_expcontrol GPIB Bus - USB0::0x0699::0x0363::C064507')
+        self.tek.select_device('sqip_expcontrol GPIB Bus - USB0::0x0699::0x0363::C104418')
 #        while True:
 #            try:
 #                dev = int(raw_input("Please select a device: "))
@@ -75,8 +79,9 @@ class TDSMeasure():
                 voltage = int(self.tek.measure(1))
                 reading.append(voltage)
                 self.dv.add(reading)
-                # print 'measured time {}'.format(float(reading[0])), zip(self.channels, reading[1:])
-                time.sleep(0.5) #self.resolution)
+                print t, voltage
+                time.sleep(0.05) #self.resolution)
+        print 'time elapsed', time.time() - self.tinit
 
     def finalize(self):
         #self.sem.finish_experiment(self.experimentPath)
