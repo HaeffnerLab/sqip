@@ -78,6 +78,7 @@ class spectrum_rabi(pulse_sequence):
                             ('Tomography', 'iteration'),
                             ('Tomography', 'tomography_excitation_frequency'),
                             ('Tomography', 'tomography_excitation_amplitude'),
+                            ('Globals','Offset729')
                             ]
     
     

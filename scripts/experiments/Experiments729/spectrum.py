@@ -38,8 +38,7 @@ class spectrum(experiment):
     required_parameters.remove(('Excitation_729','rabi_excitation_amplitude'))
     required_parameters.remove(('Excitation_729','rabi_excitation_duration'))
     required_parameters.remove(('Excitation_729','rabi_excitation_frequency'))
-    
-    
+
     def initialize(self, cxn, context, ident):
         self.ident = ident
         self.excite = self.make_experiment(excitation_729)

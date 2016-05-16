@@ -24,7 +24,9 @@ class rabi_flopping(experiment):
                            ('RabiFlopping','rabi_amplitude_729'),
                            ('RabiFlopping','frequency_selection'),
                            ('RabiFlopping','sideband_selection'),
-                           ]
+                           
+                           ('Globals','Offset729')
+                                                     ]
     required_parameters.extend(trap_frequencies)
     optional_parmeters = [
                           ('RabiFlopping', 'window_name')
@@ -51,6 +53,10 @@ class rabi_flopping(experiment):
     def setup_sequence_parameters(self):
         self.load_frequency()
         flop = self.parameters.RabiFlopping
+        #if flop.ScaleAmp == True: # Added by Maya 1/16/2015
+        #    flop.rabi_amplitude_729 = flop.rabi_amplitude_729 + flop.Amplitude729ScaleFactor
+        #    flop.Amplitude729ScaleFactor = WithUnit(0, 'dBm')
+        #    flop.ScaleAmp = False
         self.parameters['Excitation_729.rabi_excitation_amplitude'] = flop.rabi_amplitude_729
         minim,maxim,steps = flop.manual_scan
         minim = minim['us']; maxim = maxim['us']

@@ -70,7 +70,7 @@ class test_parameters(object):
               ('StateReadout','use_camera_for_readout'):False,
                   
               ('Tomography', 'rabi_pi_time'):WithUnit(50.0, 'us'),
-              ('Tomography', 'iteration'):0,
+              ('Tomography', 'iteration'):1,
               ('Tomography', 'tomography_excitation_frequency'):WithUnit(0.0, 'MHz'),
               ('Tomography', 'tomography_excitation_amplitude'):WithUnit(-11.0, 'dBm'),
               }
