@@ -5,13 +5,13 @@ import time
 nodeDict = {'node_sqip_expcontrol':
 					['Data Vault','Serial Server','Pulser','NormalPMTFlow','DAC Server', 'GPIB Bus',
 					'GPIB Device Manager','Agilent Server', 'RohdeSchwarz Server','SD Tracker', 
-					'ScriptScanner','ParameterVault'],					
+					'ScriptScanner','ParameterVault']					
 		}
 
 #connect to LabRAD
 errors = False
 try:
-	cxn = labrad.connect()
+        cxn = labrad.connect()
 except Exception:
 	print 'Please start LabRAD Manager'
 else:
@@ -25,7 +25,7 @@ else:
 			print '\nWorking on {} \n '.format(node)
 			cxn.servers[node].refresh_servers()
 			#if node server is up, start all possible servers on it that are not already running
-			running_servers = np.array(cxn.servers[node].running_servers().asarray)
+			running_servers = np.asarray(cxn.servers[node].running_servers())
 			for server in nodeDict[node]:
 				if server in running_servers: 
 					print server + ' is already running'

@@ -47,8 +47,17 @@ class excitation_729(experiment):
     #removing pulse sequence items that will be calculated in the experiment and do not need to be loaded
     required_parameters.remove(('OpticalPumping', 'optical_pumping_frequency_729'))
     required_parameters.remove(('SidebandCooling', 'sideband_cooling_frequency_729'))
+
+    @classmethod
+    def all_required_parameters(cls):
+        params = set(cls.required_parameters)
+        params = params.union(set(cls.pulse_sequence.all_required_parameters()))
+        params = list(params)
+        return params
     
     def initialize(self, cxn, context, ident):
+        print 'required parameters'
+        print self.required_parameters
         self.pulser = cxn.pulser
         self.drift_tracker = cxn.sd_tracker
         self.dv = cxn.data_vault
@@ -109,6 +118,13 @@ class excitation_729(experiment):
     
     def setup_sequence_parameters(self):
         op = self.parameters.OpticalPumping
+        print self.parameters.makeReport(add_path = True)
+        print 'blah blah blah'
+        print op.frequency_selection
+       # print 'next is the selection'
+        #print op.frequency_selection
+        #print op
+        #print 'blah blah blah'
         optical_pumping_frequency = cm.frequency_from_line_selection(op.frequency_selection, op.manual_frequency_729, op.line_selection, self.drift_tracker)
         self.parameters['OpticalPumping.optical_pumping_frequency_729'] = optical_pumping_frequency
         sc = self.parameters.SidebandCooling

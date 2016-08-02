@@ -2,6 +2,8 @@ class common_methods_729(object):
     
     @staticmethod
     def frequency_from_line_selection(frequency_selection, manual_frequency_729, line_selection, drift_tracker):
+        print 'here it is'
+        print frequency_selection
         if frequency_selection == 'manual':
             return manual_frequency_729
         elif frequency_selection == 'auto':

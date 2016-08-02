@@ -20,8 +20,11 @@ class SQIP_GUI(QtGui.QMainWindow):
         histogram = self.make_histogram_widget(reactor, cxn)
         drift_tracker = self.make_drift_tracker_widget(reactor, cxn)
         script_scanner = self.make_script_scanner_widget(reactor, cxn)
+        
         centralWidget = QtGui.QWidget()
         layout = QtGui.QHBoxLayout()
+        #layout = QtGui.QGridLayout()
+        
         self.tabWidget = QtGui.QTabWidget()
         self.tabWidget.addTab(optics_widget,'&Optics')
         self.tabWidget.addTab(voltage_widget,'&Electrode Voltages')
@@ -30,8 +33,14 @@ class SQIP_GUI(QtGui.QMainWindow):
         self.tabWidget.addTab(script_scanner, '&Script Scanner')
         self.createGrapherTab()
         layout.addWidget(self.tabWidget)
+        
         centralWidget.setLayout(layout)
-        self.setCentralWidget(centralWidget)
+
+        scrollWidget = QtGui.QScrollArea()
+        scrollWidget.setWidget(centralWidget)
+        scrollWidget.setWidgetResizable(True)
+        
+        self.setCentralWidget(scrollWidget)
         
     def make_script_scanner_widget(self, reactor, cxn):
         from common.clients.script_scanner_gui.script_scanner_gui import script_scanner_gui
@@ -66,7 +75,7 @@ class SQIP_GUI(QtGui.QMainWindow):
         from common.clients.LINETRIGGER_CONTROL import linetriggerWidget
         gridLayout = QtGui.QGridLayout()
         #gridLayout.addWidget(voltageWidget(reactor),            0,0,1,1)
-        gridLayout.addWidget(cavityWidget(reactor),             0,0,1,1)#0,1,3,2)
+        gridLayout.addWidget(cavityWidget(reactor,widget),             0,0,1,1)#0,1,3,2)
         gridLayout.addWidget(multiplexerWidget(reactor),        0,1,3,2)#0,3,3,1)
         gridLayout.addWidget(switchWidget(reactor, cxn),        3,0,1,1)
         gridLayout.addWidget(pmtWidget(reactor),                0,3,3,1)#3,1,1,1)
