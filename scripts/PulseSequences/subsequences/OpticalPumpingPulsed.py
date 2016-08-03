@@ -34,5 +34,4 @@ class optical_pumping_pulsed(pulse_sequence):
             duration_866 =  opp.optical_pumping_pulsed_duration_repumps + opp.optical_pumping_pulsed_duration_additional_866
             self.addDDS('729', start, opp.optical_pumping_pulsed_duration_729 , freq729 , ampl729)
             self.addDDS('854', start_repumps, opp.optical_pumping_pulsed_duration_repumps, freq854, ampl854)
-            self.addTTL(('854DP',start_repumps, self.p.sideband_cooling_pulsed_duration_repumps)) #
             self.addDDS('866', start_repumps, duration_866, freq866 , ampl866)

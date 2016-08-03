@@ -1,9 +1,9 @@
 from common.abstractdevices.script_scanner.scan_methods import experiment
 from common.okfpgaservers.pulser.pulse_sequences.pulse_sequence import pulse_sequence
-from lattice.scripts.PulseSequences.subsequences.StateReadout import state_readout
-from lattice.scripts.PulseSequences.subsequences.TurnOffAll import turn_off_all
+from space_time.scripts.PulseSequences.subsequences.StateReadout import state_readout
+from space_time.scripts.PulseSequences.subsequences.TurnOffAll import turn_off_all
 import numpy as np
-from ion_fitting import linear_chain_fitter
+from ion_state_detector import ion_state_detector
 from labrad.units import WithUnit
 from multiprocessing import Process
 
@@ -28,17 +28,27 @@ class reference_camera_image(experiment):
                            ('StateReadout','state_readout_frequency_397'),
                            ('StateReadout','state_readout_amplitude_866'),
                            ('StateReadout','state_readout_frequency_866'),
+                           ('StateReadout','camera_trigger_width'),
+                           ('StateReadout','camera_transfer_additional'),
+                           
                            ('DopplerCooling','doppler_cooling_repump_additional'),
                            ]
     
-
+    @classmethod
+    def all_required_parameters(cls):
+        parameters = set(cls.required_parameters)
+        parameters = list(parameters)
+        return parameters
+    
     def initialize(self, cxn, context, ident):
-        self.fitter = linear_chain_fitter()
+        p = self.parameters.IonsOnCamera
+        print int(p.ion_number)
+        self.fitter = ion_state_detector(int(p.ion_number))
         self.ident = ident
         self.camera = cxn.andor_server
         self.pulser = cxn.pulser
         self.pv = cxn.parametervault
-        p = self.parameters.IonsOnCamera
+
         self.image_region = image_region = [
                              int(p.horizontal_bin),
                              int(p.vertical_bin),
@@ -62,7 +72,7 @@ class reference_camera_image(experiment):
         self.camera.set_number_kinetics(self.exposures)
         #generate the pulse sequence
         self.parameters.StateReadout.use_camera_for_readout = True
-        start_time = WithUnit(5, 'ms') #do nothing in the beginning to let the camera transfer each image
+        start_time = WithUnit(20, 'ms') #do nothing in the beginning to let the camera transfer each image
         self.sequence = pulse_sequence(self.parameters, start = start_time)
         self.sequence.required_subsequences = [state_readout, turn_off_all]
         self.sequence.addSequence(turn_off_all)
@@ -75,12 +85,16 @@ class reference_camera_image(experiment):
         self.pulser.wait_sequence_done()
         self.pulser.stop_sequence()
         proceed = self.camera.wait_for_kinetic()
-        if not proceed: raise Exception ("Did not get all kinetic images from camera")
+        if not proceed:
+            self.camera.abort_acquisition()
+            self.finalize(cxn, context)
+            raise Exception ("Did not get all kinetic images from camera")
         images = self.camera.get_acquired_data(self.exposures).asarray
         x_pixels = int( (self.image_region[3] - self.image_region[2] + 1.) / (self.image_region[0]) )
         y_pixels = int(self.image_region[5] - self.image_region[4] + 1.) / (self.image_region[1])
         images = np.reshape(images, (self.exposures, y_pixels, x_pixels))
         image  = np.average(images, axis = 0)
+        np.save('37ions_global', image)
         self.fit_and_plot(image)
         
     def fit_and_plot(self, image):
@@ -88,7 +102,7 @@ class reference_camera_image(experiment):
         x_axis = np.arange(p.horizontal_min, p.horizontal_max + 1, self.image_region[0])
         y_axis = np.arange(p.vertical_min, p.vertical_max + 1, self.image_region[1])
         xx, yy = np.meshgrid(x_axis, y_axis)
-        result, params = self.fitter.guess_parameters_and_fit(xx, yy, image, p.ion_number)
+        result, params = self.fitter.guess_parameters_and_fit(xx, yy, image)
         self.fitter.report(params)
         #ideally graphing should be done by saving to data vault and using the grapher
         p = Process(target = self.fitter.graph, args = (x_axis, y_axis, image, params, result))

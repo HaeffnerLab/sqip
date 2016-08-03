@@ -7,9 +7,6 @@ def measureParameters(cxn, cxnlab, specified = None):
     """Measures parameters in the list and returns the dictionary containing these"""
     d = {}
     local = {
-            'endcaps':measure_endcaps,
-            'compensation':measure_compensation,
-            'multipoles':measure_dacs,
             }
     lab = {
             'cavity397':measure_cavity('397'),
@@ -33,19 +30,7 @@ def measure_trapdrive(cxn, d):
     server = cxn.trap_drive
     d['rffreq'] = server.frequency()
     d['rfpower'] = server.amplitude()
-    
-def measure_dacs(cxn , d):
-    server = cxn.dac_server
-    fields = dict(server.get_multipole_values())
-    d['Multipole.U1'] = fields['U1']
-    d['Multipole.U2'] = fields['U2']
-    d['Multipole.U3'] = fields['U3']
-    d['Multipole.U4'] = fields['U4']
-    d['Multipole.U5'] = fields['U5']
-    d['Multipole.Ex'] = fields['Ex']
-    d['Multipole.Ey'] = fields['Ey']
-    d['Multipole.Ez'] = fields['Ez']
-    
+
 def measure_endcaps(cxn , d):
     server = cxn.dac
     d['endcap1'] = server.get_voltage('endcap1')

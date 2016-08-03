@@ -2,12 +2,16 @@ import labrad
 import numpy as np
 import time
 
+##nodeDict = {'node_sqip_expcontrol':
+##					['Data Vault','Serial Server','Pulser','NormalPMTFlow','DAC Server', 'GPIB Bus',
+##					'GPIB Device Manager','Agilent Server', 'RohdeSchwarz Server','SD Tracker', 
+##					'ScriptScanner','ParameterVault']					
+##		}
 nodeDict = {'node_sqip_expcontrol':
-					['Data Vault','Serial Server','Pulser','NormalPMTFlow','DAC Server', 'GPIB Bus',
-					'GPIB Device Manager','Agilent Server', 'RohdeSchwarz Server','SD Tracker', 
+					['Data Vault','Pulser','NormalPMTFlow','DAC Server',
+                                        'SD Tracker', 
 					'ScriptScanner','ParameterVault']					
 		}
-
 #connect to LabRAD
 errors = False
 try:

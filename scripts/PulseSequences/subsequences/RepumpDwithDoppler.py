@@ -7,6 +7,8 @@ class doppler_cooling_after_repump_d(pulse_sequence):
     
     required_parameters = [('DopplerCooling','doppler_cooling_duration')]
     required_subsequences = [repump_d, doppler_cooling]
+    replaced_parameters = {doppler_cooling:[('DopplerCooling','doppler_cooling_duration')]
+                           }
     
     def sequence(self):
         dc_duration = self.parameters.DopplerCooling.doppler_cooling_duration
@@ -15,3 +17,5 @@ class doppler_cooling_after_repump_d(pulse_sequence):
         stop_repump_d = self.end
         replacement = TreeDict.fromdict({'DopplerCooling.doppler_cooling_duration':stop_repump_d + dc_duration})
         self.addSequence(doppler_cooling, replacement, position = self.start)
+        
+        

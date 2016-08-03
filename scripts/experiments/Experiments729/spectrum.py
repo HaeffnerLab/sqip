@@ -1,16 +1,19 @@
 from common.abstractdevices.script_scanner.scan_methods import experiment
-from excitation_729 import excitation_729
+from excitations import excitation_729
 from sqip.scripts.scriptLibrary.common_methods_729 import common_methods_729 as cm
 from sqip.scripts.scriptLibrary import dvParameters
+
+#from sqip.scripts.experiments.Crystallization.crystallization import crystallization
+
 import time
 import labrad
 from labrad.units import WithUnit
 import numpy as np
 
 class spectrum(experiment):
-
+    
     name = 'Spectrum729'
-    required_parameters = [
+    spectrum_required_parameters = [
                            ('Spectrum','custom'),
                            ('Spectrum','normal'),
                            ('Spectrum','fine'),
@@ -28,25 +31,50 @@ class spectrum(experiment):
                            ('TrapFrequencies','radial_frequency_1'),
                            ('TrapFrequencies','radial_frequency_2'),
                            ('TrapFrequencies','rf_drive_frequency'),
+                           
+                           ('Crystallization', 'auto_crystallization'),
+                           ('Crystallization', 'camera_record_exposure'),
+                           ('Crystallization', 'camera_threshold'),
+                           ('Crystallization', 'max_attempts'),
+                           ('Crystallization', 'max_duration'),
+                           ('Crystallization', 'min_duration'),
+                           ('Crystallization', 'pmt_record_duration'),
+                           ('Crystallization', 'pmt_threshold'),
+                           ('Crystallization', 'use_camera'),
                            ]
     
-    optional_parmeters = [
+    spectrum_optional_parmeters = [
                           ('Spectrum', 'window_name')
                           ]
-    required_parameters.extend(excitation_729.required_parameters)
-    #removing parameters we'll be overwriting, and they do not need to be loaded
-    required_parameters.remove(('Excitation_729','rabi_excitation_amplitude'))
-    required_parameters.remove(('Excitation_729','rabi_excitation_duration'))
-    required_parameters.remove(('Excitation_729','rabi_excitation_frequency'))
-
+    
+    @classmethod
+    def all_required_parameters(cls):
+        parameters = set(cls.spectrum_required_parameters)
+        parameters = parameters.union(set(excitation_729.all_required_parameters()))
+        parameters = list(parameters)
+        #removing parameters we'll be overwriting, and they do not need to be loaded
+        parameters.remove(('Excitation_729','rabi_excitation_amplitude'))
+        parameters.remove(('Excitation_729','rabi_excitation_duration'))
+        parameters.remove(('Excitation_729','rabi_excitation_frequency'))
+        return parameters
+    
     def initialize(self, cxn, context, ident):
         self.ident = ident
+        
+        ## ???
+        #print "spectrum"
+        #import IPython
+        #IPython.embed()            
+        
         self.excite = self.make_experiment(excitation_729)
         self.excite.initialize(cxn, context, ident)
+        if self.parameters.Crystallization.auto_crystallization:
+            self.crystallizer = self.make_experiment(crystallization)
+            self.crystallizer.initialize(cxn, context, ident)
         self.scan = []
         self.amplitude = None
         self.duration = None
-        self.cxnlab = labrad.connect('192.168.169.49') #connection to labwide network
+        self.cxnlab = labrad.connect('192.168.169.49',password='lab') #connection to labwide network
         self.drift_tracker = cxn.sd_tracker
         self.dv = cxn.data_vault
         self.spectrum_save_context = cxn.context()
@@ -73,6 +101,11 @@ class spectrum(experiment):
         self.scan = np.linspace(minim,maxim, steps)
         self.scan = [WithUnit(pt, 'MHz') for pt in self.scan]
         
+        ## here
+        #import IPython
+        #IPython.embed()
+        
+        
     def setup_data_vault(self):
         localtime = time.localtime()
         datasetNameAppend = time.strftime("%Y%b%d_%H%M_%S",localtime)
@@ -94,13 +127,42 @@ class spectrum(experiment):
         for i,freq in enumerate(self.scan):
             should_stop = self.pause_or_stop()
             if should_stop: break
+            
+            # circumvent crystallization
+            #excitation = self.get_excitation_crystallizing(cxn, context, freq)
+            
+            # start: run sequence directly
             self.parameters['Excitation_729.rabi_excitation_frequency'] = freq
             self.excite.set_parameters(self.parameters)
-            excitation = self.excite.run(cxn, context)
+            excitation, readouts = self.excite.run(cxn, context)
+            # end: run sequence directly
+            
+            if excitation is None: break
             submission = [freq['MHz']]
             submission.extend(excitation)
             self.dv.add(submission, context = self.spectrum_save_context)
             self.update_progress(i)
+    
+    def get_excitation_crystallizing(self, cxn, context, freq):
+        excitation = self.do_get_excitation(cxn, context, freq)
+        if self.parameters.Crystallization.auto_crystallization:
+            initally_melted, got_crystallized = self.crystallizer.run(cxn, context)
+            #if initially melted, redo the point
+            while initally_melted:
+                if not got_crystallized:
+                    #if crystallizer wasn't able to crystallize, then pause and wait for user interaction
+                    self.cxn.scriptscanner.pause_script(self.ident, True)
+                    should_stop = self.pause_or_stop()
+                    if should_stop: return None
+                excitation = self.do_get_excitation(cxn, context, freq)
+                initally_melted, got_crystallized = self.crystallizer.run(cxn, context)
+        return excitation
+    
+    def do_get_excitation(self, cxn, context, freq):
+        self.parameters['Excitation_729.rabi_excitation_frequency'] = freq
+        self.excite.set_parameters(self.parameters)
+        excitation, readouts = self.excite.run(cxn, context)
+        return excitation
     
     def fit_lorentzian(self, timeout):
         #for lorentzian format is FWHM, center, height, offset
