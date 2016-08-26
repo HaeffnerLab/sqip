@@ -5,7 +5,7 @@ from space_time.scripts.PulseSequences.resetDACs import reset_DACs
 
 class reset_dac(pulse_sequence):
     
-    required_parameters = [ ('Ramp', 'duration'),
+    required_parameters = [ #('Ramp', 'duration'),
                             ('Ramp', 'initial_field'),
                             ('Ramp', 'final_field'),
                             ('Ramp', 'total_steps'),

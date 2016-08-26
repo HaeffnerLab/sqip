@@ -7,6 +7,7 @@ import time
 import labrad
 from labrad.units import WithUnit
 from numpy import linspace
+import numpy
 
 class rabi_flopping_with_ramping(experiment):
     
@@ -59,10 +60,14 @@ class rabi_flopping_with_ramping(experiment):
         self.scan = []
         self.amplitude = None
         self.duration = None
-        self.cxnlab = labrad.connect('192.168.169.49',password='lab') #connection to labwide network
+        self.cxnlab = labrad.connect('192.168.169.49',password='lab',tls_mode='off') #connection to labwide network
         self.drift_tracker = cxn.sd_tracker
         self.dv = cxn.data_vault
         self.rabi_flop_save_context = cxn.context()
+        try:
+            self.grapher = cxn.grapher
+        except: self.grapher = None
+        self.cxn = cxn
     
     def setup_sequence_parameters(self):
         self.load_frequency()
@@ -83,10 +88,18 @@ class rabi_flopping_with_ramping(experiment):
         self.dv.cd(directory ,True, context = self.rabi_flop_save_context)
         output_size = self.excite.output_size
         dependants = [('Excitation','Ion {}'.format(ion),'Probability') for ion in range(output_size)]
-        self.dv.new('Rabi Flopping {}'.format(datasetNameAppend),[('Excitation', 'us')], dependants , context = self.rabi_flop_save_context)
+        ds = self.dv.new('Rabi Flopping {}'.format(datasetNameAppend),[('Excitation', 'us')], dependants , context = self.rabi_flop_save_context)
         self.dv.add_parameter('Window', ['Rabi Flopping'], context = self.rabi_flop_save_context)
-        self.dv.add_parameter('plotLive', True, context = self.rabi_flop_save_context)
-    
+        #self.dv.add_parameter('plotLive', True, context = self.rabi_flop_save_context)
+
+        window_name='rabi'
+        sc = []
+        if self.parameters.Display.relative_frequencies:
+            sc =[x - self.carrier_frequency for x in self.scan]
+        else: sc = self.scan
+
+        if self.grapher is not None:
+            self.grapher.plot_with_axis(ds, window_name, sc, False)
     def load_frequency(self):
         #reloads trap frequencyies and gets the latest information from the drift tracker
         self.reload_some_parameters(self.trap_frequencies) 
@@ -98,8 +111,18 @@ class rabi_flopping_with_ramping(experiment):
         self.parameters['Excitation_729.rabi_excitation_frequency'] = frequency
         
     def run(self, cxn, context):
-        self.setup_data_vault()
         self.setup_sequence_parameters()
+        self.setup_data_vault()
+	self.dac_server=cxn.dac_server
+
+	initial_field = self.parameters['Ramp.initial_field']
+	final_field = self.parameters['Ramp.final_field']
+	multipole = self.parameters['Ramp.multipole']
+        initial_field = initial_field['V/mm']
+        final_field = final_field['V/mm']
+	total_steps = int(self.parameters['Ramp.total_steps'])
+        
+	self.dac_server.ramp_multipole(multipole, initial_field, final_field, total_steps)
         for i,duration in enumerate(self.scan):
             should_stop = self.pause_or_stop()
             if should_stop: break
@@ -109,6 +132,16 @@ class rabi_flopping_with_ramping(experiment):
             submission.extend(excitation)
             self.dv.add(submission, context = self.rabi_flop_save_context)
             self.update_progress(i)
+        self.plot_current_sequence(cxn)
+        
+    def plot_current_sequence(self, cxn):
+        from common.okfpgaservers.pulser.pulse_sequences.plot_sequence import SequencePlotter
+        dds = cxn.pulser.human_readable_dds()
+        #print dds
+        ttl = numpy.asarray(cxn.pulser.human_readable_ttl())
+        channels = numpy.asarray(cxn.pulser.get_channels())
+        sp = SequencePlotter(ttl, dds.aslist, channels)
+        sp.makePlot()
     
     def get_excitation_crystallizing(self, cxn, context, duration):
         excitation = self.do_get_excitation(cxn, context, duration)

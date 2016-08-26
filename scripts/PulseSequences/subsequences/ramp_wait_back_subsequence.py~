@@ -4,7 +4,7 @@ import labrad
 from treedict import TreeDict
 
 class ramp_wait_back(pulse_sequence):
-	required_parameters = [				('Ramp', 'duration'),
+	required_parameters = [				('Ramp', 'step_duration'),
 							('Ramp', 'initial_field'),
 							('Ramp', 'final_field'),
 							('Ramp', 'total_steps'),
@@ -30,11 +30,11 @@ class ramp_wait_back(pulse_sequence):
 
 		#self.dac_server.ramp_multipole(multipole, initial_field, final_field, total_steps)
 
-		duration = self.parameters['Ramp.duration']
+		step_duration = self.parameters['Ramp.step_duration']
                 total_steps = self.parameters['Ramp.total_steps']
 		total_steps = int(self.parameters['Ramp.total_steps'])
-                duration = duration['us']		
-		time_interval = duration/float(total_steps) #in us
+                step_duration = step_duration['us']
+		time_interval = step_duration #in us
 		time_interval = time_interval * 10**-6
 		self.parameters['advanceDACs.times'] = [i*time_interval for i in range(0,total_steps+1)]
 
@@ -45,12 +45,11 @@ class ramp_wait_back(pulse_sequence):
 		wait = wait['s']
 		for t in times:
 			self.addTTL('adv', self.start+WithUnit(t, 's'), pl)
-		t1=times[-1]+wait
-		self.addTTL('adv',self.start+WithUnit(t1,'s'),pl)
+		t1=times[-1]+wait+(1*10**-6)
 		new_times=[x+t1 for x in times]
-		del new_times[0]
 		for i in new_times:
 			self.addTTL('adv', self.start+WithUnit(i, 's'), pl)
-		self.end=
+                duration = time_interval* float(total_steps)
+		self.end=self.start+WithUnit(duration, 's')+WithUnit(self.parameters.Heating.background_heating_time['s'],'s')+ WithUnit(duration, 's')
 		
 		

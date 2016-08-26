@@ -45,13 +45,11 @@ class ramp_wait_back(pulse_sequence):
 		wait = wait['s']
 		for t in times:
 			self.addTTL('adv', self.start+WithUnit(t, 's'), pl)
-		t1=times[-1]+wait
-		self.addTTL('adv',self.start+WithUnit(t1,'s'),pl)
+		t1=times[-1]+wait+(25*10**-6)
 		new_times=[x+t1 for x in times]
-		del new_times[0]
 		for i in new_times:
 			self.addTTL('adv', self.start+WithUnit(i, 's'), pl)
-                duration = step_duration * float(total_steps)
+                duration = time_interval* float(total_steps)
 		self.end=self.start+WithUnit(duration, 's')+WithUnit(self.parameters.Heating.background_heating_time['s'],'s')+ WithUnit(duration, 's')
 		
 		

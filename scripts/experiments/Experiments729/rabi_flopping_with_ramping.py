@@ -132,7 +132,7 @@ class rabi_flopping_with_ramping(experiment):
             submission.extend(excitation)
             self.dv.add(submission, context = self.rabi_flop_save_context)
             self.update_progress(i)
-        #self.plot_current_sequence(cxn)
+        self.plot_current_sequence(cxn)
         
     def plot_current_sequence(self, cxn):
         from common.okfpgaservers.pulser.pulse_sequences.plot_sequence import SequencePlotter
