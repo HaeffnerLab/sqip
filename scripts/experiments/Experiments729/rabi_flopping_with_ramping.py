@@ -1,5 +1,5 @@
 from common.abstractdevices.script_scanner.scan_methods import experiment
-from excitations import excitation_729
+from excitations import excitation_729_with_multipole_ramp
 from sqip.scripts.scriptLibrary.common_methods_729 import common_methods_729 as cm
 from sqip.scripts.scriptLibrary import dvParameters
 from sqip.scripts.experiments.Crystallization.crystallization import crystallization
@@ -7,10 +7,11 @@ import time
 import labrad
 from labrad.units import WithUnit
 from numpy import linspace
+import numpy
 
-class rabi_flopping(experiment):
+class rabi_flopping_with_ramping(experiment):
     
-    name = 'RabiFlopping'
+    name = 'RabiFloppingWithRamping'
     trap_frequencies = [
                         ('TrapFrequencies','axial_frequency'),
                         ('TrapFrequencies','radial_frequency_1'),
@@ -41,7 +42,7 @@ class rabi_flopping(experiment):
     def all_required_parameters(cls):
         parameters = set(cls.rabi_required_parameters)
         parameters = parameters.union(set(cls.trap_frequencies))
-        parameters = parameters.union(set(excitation_729.all_required_parameters()))
+        parameters = parameters.union(set(excitation_729_with_multipole_ramp.all_required_parameters()))
         parameters = list(parameters)
         #removing parameters we'll be overwriting, and they do not need to be loaded
         parameters.remove(('Excitation_729','rabi_excitation_amplitude'))
@@ -51,7 +52,7 @@ class rabi_flopping(experiment):
     
     def initialize(self, cxn, context, ident):
         self.ident = ident
-        self.excite = self.make_experiment(excitation_729)
+        self.excite = self.make_experiment(excitation_729_with_multipole_ramp)
         self.excite.initialize(cxn, context, ident)
         if self.parameters.Crystallization.auto_crystallization:
             self.crystallizer = self.make_experiment(crystallization)
@@ -91,18 +92,14 @@ class rabi_flopping(experiment):
         self.dv.add_parameter('Window', ['Rabi Flopping'], context = self.rabi_flop_save_context)
         #self.dv.add_parameter('plotLive', True, context = self.rabi_flop_save_context)
 
-        #the following goes with rsg
-        
         window_name='rabi'
         sc = []
         if self.parameters.Display.relative_frequencies:
             sc =[x - self.carrier_frequency for x in self.scan]
         else: sc = self.scan
-        print self.scan
-        print sc
+
         if self.grapher is not None:
             self.grapher.plot_with_axis(ds, window_name, sc, False)
-        
     def load_frequency(self):
         #reloads trap frequencyies and gets the latest information from the drift tracker
         self.reload_some_parameters(self.trap_frequencies) 
@@ -116,6 +113,16 @@ class rabi_flopping(experiment):
     def run(self, cxn, context):
         self.setup_sequence_parameters()
         self.setup_data_vault()
+	self.dac_server=cxn.dac_server
+
+	initial_field = self.parameters['Ramp.initial_field']
+	final_field = self.parameters['Ramp.final_field']
+	multipole = self.parameters['Ramp.multipole']
+        initial_field = initial_field['V/mm']
+        final_field = final_field['V/mm']
+	total_steps = int(self.parameters['Ramp.total_steps'])
+        
+	self.dac_server.ramp_multipole(multipole, initial_field, final_field, total_steps)
         for i,duration in enumerate(self.scan):
             should_stop = self.pause_or_stop()
             if should_stop: break
@@ -125,6 +132,16 @@ class rabi_flopping(experiment):
             submission.extend(excitation)
             self.dv.add(submission, context = self.rabi_flop_save_context)
             self.update_progress(i)
+        #self.plot_current_sequence(cxn)
+        
+    def plot_current_sequence(self, cxn):
+        from common.okfpgaservers.pulser.pulse_sequences.plot_sequence import SequencePlotter
+        dds = cxn.pulser.human_readable_dds()
+        #print dds
+        ttl = numpy.asarray(cxn.pulser.human_readable_ttl())
+        channels = numpy.asarray(cxn.pulser.get_channels())
+        sp = SequencePlotter(ttl, dds.aslist, channels)
+        sp.makePlot()
     
     def get_excitation_crystallizing(self, cxn, context, duration):
         excitation = self.do_get_excitation(cxn, context, duration)
@@ -164,6 +181,6 @@ class rabi_flopping(experiment):
 if __name__ == '__main__':
     cxn = labrad.connect()
     scanner = cxn.scriptscanner
-    exprt = rabi_flopping(cxn = cxn)
+    exprt = rabi_flopping_with_ramping(cxn = cxn)
     ident = scanner.register_external_launch(exprt.name)
     exprt.execute(ident)

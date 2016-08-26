@@ -9,7 +9,8 @@ class common_methods_729(object):
         elif frequency_selection == 'auto':
             try:
                 frequency = drift_tracker.get_current_line(line_selection)
-                return frequency
+                print 'got it'
+                return frequency 
             except Exception:
                 raise Exception ("Unable to get {0} from drift tracker".format(line_selection))
         else:

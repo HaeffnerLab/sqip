@@ -50,10 +50,14 @@ class rabi_flopping_scannable(experiment):
         self.scan = []
         self.amplitude = None
         self.duration = None
-        self.cxnlab = labrad.connect('192.168.169.49') #connection to labwide network
+        self.cxnlab = labrad.connect('192.168.169.49',password='lab',tls_mode='off') #connection to labwide network
         self.drift_tracker = cxn.sd_tracker
         self.dv = cxn.data_vault
         self.rabi_flop_save_context = cxn.context()
+        try:
+            self.grapher = cxn.grapher
+        except: self.grapher = None
+        self.cxn = cxn
     
     def setup_sequence_parameters(self):
         self.load_frequency()

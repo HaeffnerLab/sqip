@@ -74,10 +74,14 @@ class spectrum(experiment):
         self.scan = []
         self.amplitude = None
         self.duration = None
-        self.cxnlab = labrad.connect('192.168.169.49',password='lab') #connection to labwide network
+        self.cxnlab = labrad.connect('192.168.169.49',password='lab',tls_mode='off') #connection to labwide network
         self.drift_tracker = cxn.sd_tracker
         self.dv = cxn.data_vault
         self.spectrum_save_context = cxn.context()
+        try:
+            self.grapher = cxn.grapher
+        except: self.grapher = None
+        self.cxn = cxn
     
     def setup_sequence_parameters(self):
         sp = self.parameters.Spectrum
@@ -116,14 +120,27 @@ class spectrum(experiment):
         self.dv.cd(directory ,True, context = self.spectrum_save_context)
         output_size = self.excite.output_size
         dependants = [('Excitation','Ion {}'.format(ion),'Probability') for ion in range(output_size)]
-        self.dv.new('Spectrum {}'.format(datasetNameAppend),[('Excitation', 'us')], dependants , context = self.spectrum_save_context)
-        window_name = self.parameters.get('Spectrum.window_name', ['Spectrum'])
+        ds = self.dv.new('Spectrum {}'.format(datasetNameAppend),[('Excitation', 'us')], dependants , context = self.spectrum_save_context)
+        #window_name = self.parameters.get('Spectrum.window_name', ['Spectrum'])
+        window_name = 'spectrum'
         self.dv.add_parameter('Window', window_name, context = self.spectrum_save_context)
-        self.dv.add_parameter('plotLive', True, context = self.spectrum_save_context)
+        #self.dv.add_parameter('plotLive', True, context = self.spectrum_save_context)
+
+        #this following is added in order to use the new grapher
+        #self.save_parameters(self.dv, self.cxn, self.cxnlab, self.spectrum_save_context)
+        sc = []
+        if self.parameters.Display.relative_frequencies:
+            sc =[x - self.carrier_frequency for x in self.scan]
+        else: sc = self.scan
+        print self.scan
+        print sc
+        if self.grapher is not None:
+            self.grapher.plot_with_axis(ds, window_name, sc, False)
         
     def run(self, cxn, context):
-        self.setup_data_vault()
         self.setup_sequence_parameters()
+        self.setup_data_vault()
+        
         for i,freq in enumerate(self.scan):
             should_stop = self.pause_or_stop()
             if should_stop: break

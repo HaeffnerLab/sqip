@@ -67,7 +67,7 @@ class SQIP_GUI(QtGui.QMainWindow):
     def makeOpticsWidget(self, reactor, cxn):
         widget = QtGui.QWidget()
         #from common.clients.DAC_CONTROL import DAC_Control as voltageWidget
-        from common.clients.LASERDAC_CONTROL import DAC_Control as laserdac_control_widget  
+        #from common.clients.CAVITY_CONTROL import cavityWidget  #so that Dylan can debug
         from common.clients.multiplexer.MULTIPLEXER_CONTROL import multiplexerWidget
         from common.clients.PMT_CONTROL import pmtWidget
         from common.clients.SWITCH_CONTROL import switchWidget
@@ -76,8 +76,8 @@ class SQIP_GUI(QtGui.QMainWindow):
         from quick_actions.quick_actions import actions_widget
         gridLayout = QtGui.QGridLayout()
         #gridLayout.addWidget(voltageWidget(reactor),            0,0,1,1)
-        gridLayout.addWidget(actions_widget(reactor, cxn),      2,3,1,1)
-        gridLayout.addWidget(laserdac_control_widget(reactor),      0,0,3,2)#0,1,3,2) 
+        gridLayout.addWidget(actions_widget(reactor, cxn),      1,3,1,1)
+        #gridLayout.addWidget(cavityWidget(reactor,widget),      0,0,1,1)#0,1,3,2) #so that Dylan can debug
         gridLayout.addWidget(multiplexerWidget(reactor),        0,1,3,2)#0,3,3,1)
         gridLayout.addWidget(switchWidget(reactor, cxn),        3,0,1,1)
         gridLayout.addWidget(pmtWidget(reactor),                0,3,3,1)#3,1,1,1)

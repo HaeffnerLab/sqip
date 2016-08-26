@@ -1,0 +1,14 @@
+from common.okfpgaservers.pulser.pulse_sequences.pulse_sequence import pulse_sequence
+from labrad.units import WithUnit
+class reset_DACs(pulse_sequence):
+	required_parameters = [
+							('advanceDACs', 'pulse_length'),
+							
+	]
+
+	def sequence( self ):
+		pl = self.parameters.advanceDACs.pulse_length
+		t=2*duration+wait
+		self.addTTL('rst', WithUnit(t,'s')+20*pl, 3*pl)
+		self.addTTL('adv', WithUnit(t,'s')+21*pl, pl)
+

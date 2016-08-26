@@ -9,8 +9,6 @@ from subsequences.reset_dac import reset_dac
 from subsequences.ramp_wait_back_subsequence import ramp_wait_back
 from labrad.units import WithUnit
 from treedict import TreeDict
-import labrad
-import numpy
 
 class spectrum_rabi_with_multipole_ramp(pulse_sequence):
     
@@ -21,7 +19,7 @@ class spectrum_rabi_with_multipole_ramp(pulse_sequence):
                            ]
     
     required_subsequences = [doppler_cooling_after_repump_d,  optical_pumping, 
-                             rabi_excitation_select_channel, tomography_readout, turn_off_all, sideband_cooling,ramp_wait_back,reset_dac]
+                             rabi_excitation_select_channel, tomography_readout, turn_off_all, sideband_cooling, ramp_wait_back, reset_DACs]
     
 
     def sequence(self):
@@ -50,14 +48,4 @@ class spectrum_rabi_with_multipole_ramp(pulse_sequence):
         #IPython.embed()
         
         self.addSequence(tomography_readout)
-	self.addSequence(reset_dac)
-	
-#Putting this here gets ''please create new sequence first''       
-        '''def plot_current_sequence(cxn):
-            from common.okfpgaservers.pulser.pulse_sequences.plot_sequence import SequencePlotter
-            dds = cxn.pulser.human_readable_dds()
-            ttl = cxn.pulser.human_readable_ttl()
-            channels = numpy.asarray(cxn.pulser.get_channels())
-            sp = SequencePlotter(ttl.asarray, dds.aslist, channels)
-            sp.makePlot()
-        plot_current_sequence(labrad.connect())'''
+	self.addSequence(reset_DACs)

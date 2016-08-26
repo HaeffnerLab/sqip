@@ -48,7 +48,7 @@ def measure_dcoffsetonrf(cxn , d):
 
 def measure_cavity(wavelegnth):
     def func(cxnlab ,d):
-        server = cxnlab.laserdac
+        server = cxnlab.laserdac_server
         d['cavity{}'.format(wavelegnth)] = server.getvoltage(wavelegnth)
     return func
 
