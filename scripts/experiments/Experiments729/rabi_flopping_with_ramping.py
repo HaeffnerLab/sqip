@@ -118,6 +118,7 @@ class rabi_flopping_with_ramping(experiment):
 	initial_field = self.parameters['Ramp.initial_field']
 	final_field = self.parameters['Ramp.final_field']
 	multipole = self.parameters['Ramp.multipole']
+        #multipole = self.parameters['Ramp.multipole_copy']
         initial_field = initial_field['V/mm']
         final_field = final_field['V/mm']
 	total_steps = int(self.parameters['Ramp.total_steps'])
@@ -132,7 +133,7 @@ class rabi_flopping_with_ramping(experiment):
             submission.extend(excitation)
             self.dv.add(submission, context = self.rabi_flop_save_context)
             self.update_progress(i)
-        self.plot_current_sequence(cxn)
+        #self.plot_current_sequence(cxn)
         
     def plot_current_sequence(self, cxn):
         from common.okfpgaservers.pulser.pulse_sequences.plot_sequence import SequencePlotter
