@@ -7,6 +7,7 @@ def measureParameters(cxn, cxnlab, specified = None):
     """Measures parameters in the list and returns the dictionary containing these"""
     d = {}
     local = {
+            'drift_tracker':measure_drifttracker
             }
     lab = {
             'cavity397':measure_cavity('397'),
@@ -25,6 +26,11 @@ def measureParameters(cxn, cxnlab, specified = None):
         else:
             raise NotImplementedError
     return d
+
+def measure_drifttracker(cxn, d):
+    server = cxn.sd_tracker
+    d['drift_tracker_current_b'] = server.get_current_b()
+    d['drift_tracker_current_center'] = server.get_current_center()
 
 def measure_trapdrive(cxn, d):
     server = cxn.trap_drive

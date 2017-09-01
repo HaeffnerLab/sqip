@@ -45,7 +45,7 @@ class ramp_wait_back(pulse_sequence):
 		wait = wait['s']
 		for t in times:
 			self.addTTL('adv', self.start+WithUnit(t, 's'), pl)
-		t1=times[-1]+wait+(1*10**-6)
+		t1=times[-1]+wait-time_interval
 		new_times=[x+t1 for x in times]
 		for i in new_times:
 			self.addTTL('adv', self.start+WithUnit(i, 's'), pl)

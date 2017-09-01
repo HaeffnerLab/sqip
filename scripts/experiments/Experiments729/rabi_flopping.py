@@ -85,6 +85,7 @@ class rabi_flopping(experiment):
         directory.extend([self.name])
         directory.extend(dirappend)
         self.dv.cd(directory ,True, context = self.rabi_flop_save_context)
+	print directory
         output_size = self.excite.output_size
         dependants = [('Excitation','Ion {}'.format(ion),'Probability') for ion in range(output_size)]
         ds = self.dv.new('Rabi Flopping {}'.format(datasetNameAppend),[('Excitation', 'us')], dependants , context = self.rabi_flop_save_context)
@@ -102,6 +103,7 @@ class rabi_flopping(experiment):
         print sc
         if self.grapher is not None:
             self.grapher.plot_with_axis(ds, window_name, sc, False)
+	
         
     def load_frequency(self):
         #reloads trap frequencyies and gets the latest information from the drift tracker
@@ -116,6 +118,10 @@ class rabi_flopping(experiment):
     def run(self, cxn, context):
         self.setup_sequence_parameters()
         self.setup_data_vault()
+        
+	fr = []
+        exci = []
+
         for i,duration in enumerate(self.scan):
             should_stop = self.pause_or_stop()
             if should_stop: break
@@ -125,6 +131,10 @@ class rabi_flopping(experiment):
             submission.extend(excitation)
             self.dv.add(submission, context = self.rabi_flop_save_context)
             self.update_progress(i)
+	    #the next three lines added 08/23
+	    fr.append(submission[0])
+            exci.append(excitation)
+    	return fr,exci
     
     def get_excitation_crystallizing(self, cxn, context, duration):
         excitation = self.do_get_excitation(cxn, context, duration)

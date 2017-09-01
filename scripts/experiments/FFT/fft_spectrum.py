@@ -1,7 +1,7 @@
 import labrad
 import numpy as np
 from common.abstractdevices.script_scanner.scan_methods import experiment
-from cct.scripts.PulseSequences.subsequences.RecordTimeTags import record_timetags
+from sqip.scripts.PulseSequences.subsequences.RecordTimeTags import record_timetags
 from processFFT import processFFT
 from treedict import TreeDict
 
@@ -15,6 +15,17 @@ class fft_spectrum(experiment):
                            ('FFT','frequency_span'),
                            ('FFT','record_time'),
                            ]
+    @classmethod
+    def all_required_parameters(cls):
+        parameters = set(cls.required_parameters)
+        #parameters = parameters.union(set(cls.trap_frequencies))
+        #parameters = parameters.union(set(excitation_729.all_required_parameters()))
+        parameters = list(parameters)
+        #removing parameters we'll be overwriting, and they do not need to be loaded
+        #parameters.remove(('Excitation_729','rabi_excitation_amplitude'))
+        #parameters.remove(('Excitation_729','rabi_excitation_duration'))
+        #parameters.remove(('Excitation_729','rabi_excitation_frequency'))
+        return parameters
     
     def initialize(self, cxn, context, ident):
         self.ident = ident
@@ -55,7 +66,7 @@ class fft_spectrum(experiment):
         self.setup_parameters()
         print self.parameters.TrapFrequencies.rf_drive_frequency
         pwr = self.getPowerSpectrum()
-        #self.saveData(pwr)  ##put back in later
+        self.saveData(pwr)  ##put back in later
     
     def getPowerSpectrum(self):
         pwr = np.zeros_like(self.freqs)
@@ -66,18 +77,19 @@ class fft_spectrum(experiment):
             self.pulser.start_single()
             self.pulser.wait_sequence_done()
             self.pulser.stop_sequence()
-            timetags = self.pulser.get_timetags().asarray
+            timetags = np.asarray(self.pulser.get_timetags())
             exporttags = True
             print timetags
             if exporttags:
                 np.savetxt("tags"+str(i)+".csv",timetags,delimiter=",") 
-            #pwr += self.processor.getPowerSpectrum(self.freqs, timetags, self.record_time['s'], self.time_resolution)
+            pwr += self.processor.getPowerSpectrum(self.freqs, timetags, self.record_time['s'], self.time_resolution)
             #put back in later
             #import IPython
             #IPython.embed()
             progress = self.min_progress + (self.max_progress - self.min_progress) * (i + 1) / float(self.average)
             self.sc.script_set_progress(self.ident,  progress)
         pwr = pwr / float(self.average)
+        print pwr
         return pwr
     
     def saveData(self, pwr):

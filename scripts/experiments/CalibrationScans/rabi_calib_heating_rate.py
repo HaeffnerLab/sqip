@@ -1,4 +1,5 @@
 from sqip.scripts.experiments.Experiments729.rabi_flopping import rabi_flopping
+from sqip.scripts.experiments.CalibrationScans.calibrate_all_lines import calibrate_all_lines
 from common.abstractdevices.script_scanner.scan_methods import experiment
 from sqip.scripts.experiments.Experiments729.excitations import excitation_729
 from sqip.scripts.scriptLibrary.common_methods_729 import common_methods_729 as cm
@@ -69,6 +70,11 @@ class rabi_calib_heating_rate(experiment):
         self.rabi_flopping.initialize(cxn, context, ident)
         self.fitter = rate_from_flops_fitter()
 
+        #this section is to add line calibrations
+        self.calib_all_lines = self.make_experiment(calibrate_all_lines)
+        self.calib_all_lines.initialize(cxn, context, ident)
+        
+
         self.save_context = cxn.context()
         self.dv = cxn.data_vault
         self.pv = cxn.parametervault
@@ -92,7 +98,18 @@ class rabi_calib_heating_rate(experiment):
         for i,heat_time in enumerate(self.scan):
             #should_stop = self.pause_or_stop()
             #if should_stop: break
-       
+            
+            #####
+            #figure out how to put a caliballlines in here with 0 heating time
+##            replace = TreeDict.fromdict({
+##                                    'Heating.background_heating_time':Value(0.0, 'ms')
+##                                       })
+##            self.calib_all_lines.set_parameters(replace)
+##            self.calib_all_lines.run(cxn, context)
+
+
+            ####
+            
             replace = TreeDict.fromdict({
                                     'Heating.background_heating_time':heat_time,
                                     'Documentation.sequence':'calibrate_heating_rates',
