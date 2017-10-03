@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import lmfit
 from heatingRateAnalysis.sqip_rate_from_flops import calc_eta,alt_fit_rabi_flops,plot_heating_rate,sqip_fit_single_flop
-
+import scipy.optimize as op
 class pi_time_fitter():
 
     def guess_tpi(self, t, exci):
@@ -57,16 +57,19 @@ class rate_from_flops_fitter():
         max_index = np.where(p == p.max())[0][0]
         tmax = t[max_index]
         return 2*tmax
-    def fit_single_flop(self,key,t,ex,trap_freq,time_2pi):
-        eta = calc_eta(trap_freq, 11.5)
-        
-        nbar,time_2pi = sqip_fit_single_flop(key,t,ex,trap_freq,time_2pi,eta)
-        return nbar,time_2pi
-    def fit(self, times, ts, ps,trap_freq,time_2pi):
-        eta = calc_eta(trap_freq, 11.5)
-        (times,nbarlist,nbarerrs) = alt_fit_rabi_flops(times, ts, ps, trap_freq,time_2pi,eta)
-        rate,stderr = plot_heating_rate(times,nbarlist,nbarerrs,'{} Hz'.format(trap_freq))
-        return rate
+    def fit_single_flop(self,key,t,ex,trap_freq,time_2pi,excitation_scaling):
+        eta = calc_eta(trap_freq, 11.5) 
+        nbar,nbarerr,time_2pi,excitation_scaling = sqip_fit_single_flop(key,t,ex,trap_freq,time_2pi,eta,excitation_scaling)
+        return nbar,nbarerr,time_2pi,excitation_scaling
+    def fit_heating_rate(self, times, data, err):
+        def f(x,rate,offset):
+                return rate*x+offset
+        popt,pcov = op.curve_fit(f,times,data,p0=[1,20],sigma=err)
+        perr = np.sqrt(np.diag(pcov))
+        rate = popt[0]
+        offset = popt[1]
+        stderr = perr[0]
+        return rate,stderr
 
 def print_result(result):
 

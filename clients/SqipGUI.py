@@ -74,15 +74,17 @@ class SQIP_GUI(QtGui.QMainWindow):
         from common.clients.DDS_CONTROL import DDS_CONTROL
         from common.clients.LINETRIGGER_CONTROL import linetriggerWidget
         from quick_actions.quick_actions import actions_widget
+        from common.clients.InjectionLock_GUI_new import InjectionLock_Control as injectionwidget
         gridLayout = QtGui.QGridLayout()
         #gridLayout.addWidget(voltageWidget(reactor),            0,0,1,1)
         gridLayout.addWidget(actions_widget(reactor, cxn),      2,3,1,1)
         gridLayout.addWidget(laserdac_control_widget(reactor),      0,0,3,2)#0,1,3,2) 
         gridLayout.addWidget(multiplexerWidget(reactor),        0,1,3,2)#0,3,3,1)
         gridLayout.addWidget(switchWidget(reactor, cxn),        3,0,1,1)
-        gridLayout.addWidget(pmtWidget(reactor),                0,3,3,1)#3,1,1,1)
+        gridLayout.addWidget(pmtWidget(reactor),                0,3,2,1)#3,1,1,1)
         gridLayout.addWidget(linetriggerWidget(reactor, cxn),   3,3,1,1)#3,2,1,1)
         gridLayout.addWidget(DDS_CONTROL(reactor, cxn),         3,1,1,1)#3,3,1,1)
+        gridLayout.addWidget(injectionwidget(reactor),      1,3,1,1)
         widget.setLayout(gridLayout)
         return widget
     

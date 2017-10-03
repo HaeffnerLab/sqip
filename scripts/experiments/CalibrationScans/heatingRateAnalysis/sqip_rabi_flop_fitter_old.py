@@ -44,7 +44,7 @@ class rabi_flop_time_evolution(object):
             raise NotImplementedError("Can't calculate rabi couplings sideband order {}".format(self.sideband_order))
         return np.array([coupling_func(n) for n in range(self.nmax)])
         
-    def compute_evolution_thermal(self, nbar, delta, time_2pi, t, excitation_scaling):
+    def compute_evolution_thermal(self, nbar, delta, time_2pi, t, excitation_scaling = 1.):
         '''returns the state evolution for temperature nbar, detuning delta, rabi frequency T_Rabi for times t'''
         omega = self.rabi_coupling
         ones = np.ones_like(t)

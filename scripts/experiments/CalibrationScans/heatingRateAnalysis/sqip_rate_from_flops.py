@@ -7,10 +7,17 @@ import scipy.optimize as op
 import lmfit
 from matplotlib import pyplot
 # from U2freqcalc import freq_from_U2
+import numpy as np
 
 #this is for cycling colors so you can plot in multiple colors and coordinate data points and fits
 from itertools import cycle
-cycol = cycle('bgrcmk').next 
+cycol = cycle('bgrcmk').next
+
+######
+## Note: the only function in here that is updated to include excitation scaling is
+## the fit single flop function. 09/14
+## Corrected the division by zero in the fit procedure. 09/21
+####
 
 hbar = 1.0546e-34
 m = 39.96*1.66e-27
@@ -37,7 +44,9 @@ def plot_heating_rate(times,data,err,label=''):
         def f(x,rate,offset):
                 return rate*x+offset
         popt,pcov = op.curve_fit(f,times,data,p0=[1,20],sigma=err)
-        #variance = cov_matrix[0][0]
+        #variance =
+        te = rabi_flop_time_evolution(0,eta,nmax=2500) #if you get the error that the hilbert space is too small, then increase nmax
+        #cov_matrix[0][0]
         perr = np.sqrt(np.diag(pcov))
         rate = popt[0]
         offset = popt[1]
@@ -67,8 +76,10 @@ def fit_rabi_flops(file_loc,file_ext,data_dict,trap_freq,plot_flops,excitation_s
         for key in times:
                 #import data and calculate errors based on 100 experiments
                 t,p = import_data(file_loc + str(data_dict[key][0]) + ".dir/" + file_ext + str(data_dict[key][0]) + ".csv")
-                p[0] = 0.001 #there is something wrong with the first entry and this solves it?
                 perr = [np.sqrt(x*(1-x)/100.) for x in p]
+                for index in range(0,len(p)):
+                        if perr[index] == 0:
+                                perr[index] = np.sqrt(0.01*(1-0.01)/100.)
                 #model for Rabi flops, use 0 for sidebands, +-1 etc for sidebands..
                 te = rabi_flop_time_evolution(0,eta,nmax=2500) #if you get the error that the hilbert space is too small, then increase nmax
                 params = lmfit.Parameters()
@@ -199,13 +210,15 @@ def alt_fit_rabi_flops(times, ts, ps, trap_freq,time_2pi,eta):
                         pyplot.legend()
         return (times,nbarlist,nbarerrs)
 
-def sqip_fit_single_flop(key,t,p, trap_freq,time_2pi,eta):
-	delta = 0  
-	excitation_scaling=1 
-	nbar = 40     
+def sqip_fit_single_flop(key,t,p, trap_freq,time_2pi,eta,excitation_scaling):
+	#delta = 0  
+	#excitation_scaling=1.0 
+	nbar = 40.0     
 	
-        p[0] = 0.001 #there is something wrong with the first entry and this solves it?
-        perr = [np.sqrt(x*(1-x)/100.) for x in p]
+        perr = np.array([np.sqrt(x*(1-x)/100.) for x in p])
+        for index in range(0,len(p)):
+                if perr[index] == 0:
+                        perr[index] = np.sqrt(0.01*(1-0.01)/100.)
         #model for Rabi flops, use 0 for sidebands, +-1 etc for sidebands..
         te = rabi_flop_time_evolution(0,eta,nmax=2500) #if you get the error that the hilbert space is too small, then increase nmax
         params = lmfit.Parameters()
@@ -214,20 +227,31 @@ def sqip_fit_single_flop(key,t,p, trap_freq,time_2pi,eta):
 
         if key == 0:
                 params.add('time_2pi',value = time_2pi,vary=True)
+                params.add('excitation_scaling',value = excitation_scaling,vary=True, min=0.85,max=1.0)
+                #params.add('excitation_scaling',value = excitation_scaling,vary=False)
+
         else:
                 params.add('time_2pi',value = time_2pi,vary=False)
+                params.add('excitation_scaling',value = excitation_scaling,vary=False)
+
+##        params.add('time_2pi',value = time_2pi,vary=False)
+##        params.add('excitation_scaling',value = excitation_scaling,vary=False)        
         def rabi_fit_thermal(params,t,data,err):
-                model = te.compute_evolution_thermal(params['nbar'].value, params['delta'].value, params['time_2pi'].value, t,excitation_scaling=excitation_scaling)
+                model = te.compute_evolution_thermal(params['nbar'].value, params['delta'].value, params['time_2pi'].value, t,params['excitation_scaling'].value)
                 resid = model-data
                 weighted = [np.sqrt(resid[x]**2/err[x]**2) for x in range(len(err))]
-                return weighted
+                return np.array(weighted)
 
+        print params
         result = lmfit.minimize(rabi_fit_thermal,params,args = (t,p,perr))
+        print result.params
         params = result.params
 ##        if key == 0:
 ##                time_2pi = params['time_2pi'].value
 
 ##        fit_values = te.compute_evolution_thermal(params['nbar'].value, params['delta'].value, params['time_2pi'].value, t)
 
-        return params['nbar'].value,params['time_2pi'].value
+        print 'in sqipratefromflops'
+        print params['nbar'].stderr
+        return params['nbar'].value,params['nbar'].stderr, params['time_2pi'].value,params['excitation_scaling'].value
  

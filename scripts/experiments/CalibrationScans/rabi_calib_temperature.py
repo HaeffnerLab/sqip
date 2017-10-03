@@ -14,9 +14,6 @@ import time
 import numpy as np
 import labrad
 from fitters import rate_from_flops_fitter
-import math
-import datetime
-import os
 
 class rabi_calib_heating_rate(experiment):
 
@@ -94,79 +91,55 @@ class rabi_calib_heating_rate(experiment):
 
         scan_methods.setup_data_vault(cxn, self.save_context, dv_args)
 
-        scan_param = self.parameters.CalibrationScans.heating_rate_scan_interval
+        #scan_param = self.parameters.CalibrationScans.heating_rate_scan_interval
 
-        self.scan = scan_methods.simple_scan(scan_param, 'us')
+        #self.scan = scan_methods.simple_scan(scan_param, 'us')
 
-        nbarlist=[]
-        nbarerrlist=[]
-        heattimes=[]
-        for i,heat_time in enumerate(self.scan):
-            #should_stop = self.pause_or_stop()
-            #if should_stop: break
-            
-            #####
-            #figure out how to put a caliballlines in here with 0 heating time
-            replace = TreeDict.fromdict({
-                                    'Heating.background_heating_time':WithUnit(0.0, 'ms')
-                                       })
-            self.calib_all_lines.set_parameters(replace)
-            self.calib_all_lines.run(cxn, context)
+        #for i,heat_time in enumerate(self.scan):
+        #should_stop = self.pause_or_stop()
+        #if should_stop: break
+        
+        #####
+        #figure out how to put a caliballlines in here with 0 heating time
+##            replace = TreeDict.fromdict({
+##                                    'Heating.background_heating_time':WithUnit(0.0, 'ms')
+##                                       })
+##            self.calib_all_lines.set_parameters(replace)
+##            self.calib_all_lines.run(cxn, context)
 
 
-            ####
-            
-            replace = TreeDict.fromdict({
-                                    'Heating.background_heating_time':heat_time,
-                                    'Documentation.sequence':'calibrate_heating_rates',
-                                       })
-            self.rabi_flopping.set_parameters(replace)
-            
+        ####
+        
+##        replace = TreeDict.fromdict({
+##                                'Documentation.sequence':'calibrate_heating_rates',
+##                                   })
+        self.rabi_flopping.set_parameters(replace)
+        
 
-            t,ex = self.rabi_flopping.run(cxn, context)
-            t = np.array(t)
-            ex = np.array(ex)
-            ex = ex.flatten()
-            trap_freq = self.parameters.TrapFrequencies.axial_frequency['Hz']
-            
-            
-            if heat_time == 0:
-                time_2pi = self.fitter.calc_2pitime(t,ex)
-                excitation_scaling = 1.0
-                nbar,nbarerr,time_2pi,excitation_scaling = self.fitter.fit_single_flop(heat_time,t,ex,trap_freq,time_2pi,excitation_scaling)
-            else:
-                nbar,nbarerr,temp,temp1 = self.fitter.fit_single_flop(heat_time,t,ex,trap_freq,time_2pi,excitation_scaling)
+        t,ex = self.rabi_flopping.run(cxn, context)
+        t = np.array(t)
+        ex = np.array(ex)
+        ex = ex.flatten()
+        trap_freq = self.parameters.TrapFrequencies.axial_frequency['Hz']
 
-            
-            #submission is for the data vault for grapher. not sure how to add the error in
+        if heat_time == 0:
+            time_2pi = self.fitter.calc_2pitime(t,ex)
+            excitation_scaling = 1.0
+            nbar,nbarerr,time_2pi,excitation_scaling = self.fitter.fit_single_flop(heat_time,t,ex,trap_freq,time_2pi,excitation_scaling)
+        else:
+            nbar,nbarerr,temp,temp1 = self.fitter.fit_single_flop(heat_time,t,ex,trap_freq,time_2pi,excitation_scaling)
 
-            
-            submission = [heat_time['ms']]
-            submission.extend([nbar,nbarerr])
-    
-            if not math.isnan(nbarerr):
-                self.dv.add(submission, context = self.save_context)
-                heattimes.append(heat_time['ms'])
-                nbarlist.append(nbar)
-                nbarerrlist.append(nbarerr)
-            
-            self.rabi_flopping.finalize(cxn, context)
-        print 'here are the results'
-        print nbarlist
-        print nbarerrlist
-        rate, stderr = self.fitter.fit_heating_rate(heattimes, nbarlist, nbarerrlist)
+        
+        #submission is for the data vault for grapher. not sure how to add the error in
+        
+        submission = [heat_time['ms']]
+        submission.extend([nbar,nbarerr])
 
-        try:
-            f = open('/home/sqip/HeatingRateData/rates' + datetime.date.today().strftime('%d_%m_%y')+'.txt','a')
-        except IOError:
-            print 'creating new file'
-            f = open('/home/sqip/HeatingRateData/rates' + datetime.date.today().strftime('%d_%m_%y')+'.txt','w')
-            
+        if not math.isnan(nbarerr):
+            self.dv.add(submission, context = self.save_context)
+        self.rabi_flopping.finalize(cxn, context)
 
-        f.write("%.2f" % rate + ',' + "%.2f" % stderr + ',' + datetime.datetime.now().strftime("%X")+"\n")
-        print f
-        f.close()
-            
+        #here we should do a rate, stderr = self.fitter.fit_heating_rate(times, nbarlist, nbarerr)
             
     def finalize(self, cxn, context):
         self.rabi_flopping.save_parameters(self.dv, cxn, self.cxnlab, self.save_context)
