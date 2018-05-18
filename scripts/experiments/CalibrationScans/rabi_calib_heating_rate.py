@@ -107,11 +107,11 @@ class rabi_calib_heating_rate(experiment):
             
             #####
             #figure out how to put a caliballlines in here with 0 heating time
-            replace = TreeDict.fromdict({
-                                    'Heating.background_heating_time':WithUnit(0.0, 'ms')
-                                       })
-            self.calib_all_lines.set_parameters(replace)
-            self.calib_all_lines.run(cxn, context)
+            #replace = TreeDict.fromdict({
+             #                       'Heating.background_heating_time':WithUnit(0.0, 'ms')
+              #                         })
+            #self.calib_all_lines.set_parameters(replace)
+            #self.calib_all_lines.run(cxn, context)
 
 
             ####
