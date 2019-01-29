@@ -54,7 +54,8 @@ class peak_fitter():
 class rate_from_flops_fitter():
     def calc_2pitime(self,t,p):
         p=np.array(p)
-        max_index = np.where(p == p.max())[0][0]
+        p_third = np.array(p[0:np.rint(np.size(p)/3)])
+        max_index = np.where(p_third == p_third.max())[0][0]
         tmax = t[max_index]
         return 2*tmax
     def fit_single_flop(self,key,t,ex,trap_freq,time_2pi,excitation_scaling):

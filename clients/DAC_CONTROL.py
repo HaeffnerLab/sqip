@@ -30,7 +30,7 @@ class MULTIPOLE_CONTROL(QtGui.QWidget):
         self.controls['Ey'] = QCustomLevelSpin('Ey', (-2.,2.))
         self.controls['Ez'] = QCustomLevelSpin('Ez', (-2.,2.))
         self.controls['U1'] = QCustomLevelSpin('U1', (-20.,20.))
-        self.controls['U2'] = QCustomLevelSpin('U2', (0.,20.))
+        self.controls['U2'] = QCustomLevelSpin('U2', (0.,40.))
         self.controls['U3'] = QCustomLevelSpin('U3', (-10.,10.))
         self.controls['U4'] = QCustomLevelSpin('U4', (-10.,10.))
         self.controls['U5'] = QCustomLevelSpin('U5', (-10.,10.))

@@ -132,7 +132,7 @@ class rabi_calib_heating_rate(experiment):
             
             if heat_time == 0:
                 time_2pi = self.fitter.calc_2pitime(t,ex)
-                excitation_scaling = 1.0
+                excitation_scaling = 0.99
                 nbar,nbarerr,time_2pi,excitation_scaling = self.fitter.fit_single_flop(heat_time,t,ex,trap_freq,time_2pi,excitation_scaling)
             else:
                 nbar,nbarerr,temp,temp1 = self.fitter.fit_single_flop(heat_time,t,ex,trap_freq,time_2pi,excitation_scaling)

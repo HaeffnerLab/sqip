@@ -213,17 +213,17 @@ def alt_fit_rabi_flops(times, ts, ps, trap_freq,time_2pi,eta):
 def sqip_fit_single_flop(key,t,p, trap_freq,time_2pi,eta,excitation_scaling):
 	#delta = 0  
 	#excitation_scaling=1.0 
-	nbar = 40.0     
+	nbar = 20.0     
 	
         perr = np.array([np.sqrt(x*(1-x)/100.) for x in p])
         for index in range(0,len(p)):
                 if perr[index] == 0:
                         perr[index] = np.sqrt(0.01*(1-0.01)/100.)
         #model for Rabi flops, use 0 for sidebands, +-1 etc for sidebands..
-        te = rabi_flop_time_evolution(0,eta,nmax=2500) #if you get the error that the hilbert space is too small, then increase nmax
+        te = rabi_flop_time_evolution(0,eta,nmax=6000) #if you get the error that the hilbert space is too small, then increase nmax
         params = lmfit.Parameters()
         params.add('delta',value = 0.0,vary=False)
-        params.add('nbar',value = nbar,min=0.0,max=200.0)
+        params.add('nbar',value = nbar,min=1.0,max=200.0)
 
         if key == 0:
                 params.add('time_2pi',value = time_2pi,vary=True)
@@ -232,7 +232,9 @@ def sqip_fit_single_flop(key,t,p, trap_freq,time_2pi,eta,excitation_scaling):
 
         else:
                 params.add('time_2pi',value = time_2pi,vary=False)
-                params.add('excitation_scaling',value = excitation_scaling,vary=False)
+                #params.add('excitation_scaling',value = excitation_scaling,vary=False)
+                params.add('excitation_scaling',value = excitation_scaling,vary=True, min=0.85,max=1.0)
+
 
 ##        params.add('time_2pi',value = time_2pi,vary=False)
 ##        params.add('excitation_scaling',value = excitation_scaling,vary=False)        

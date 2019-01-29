@@ -19,7 +19,9 @@ class SQIP_GUI(QtGui.QMainWindow):
         voltage_widget = self.makeVoltageWidget(reactor, cxn)
         histogram = self.make_histogram_widget(reactor, cxn)
         drift_tracker = self.make_drift_tracker_widget(reactor, cxn)
+        drift_tracker_global = self.make_drift_tracker_global_widget(reactor, cxn)
         script_scanner = self.make_script_scanner_widget(reactor, cxn)
+        script_scanner2 = self.make_script_scanner2_widget(reactor, cxn)
         
         centralWidget = QtGui.QWidget()
         layout = QtGui.QHBoxLayout()
@@ -30,7 +32,9 @@ class SQIP_GUI(QtGui.QMainWindow):
         self.tabWidget.addTab(voltage_widget,'&Electrode Voltages')
         self.tabWidget.addTab(histogram, '&Readout Histogram')
         self.tabWidget.addTab(drift_tracker, '&SD Drift Tracker')
+        self.tabWidget.addTab(drift_tracker_global, '&Global Drift Tracker')
         self.tabWidget.addTab(script_scanner, '&Script Scanner')
+        self.tabWidget.addTab(script_scanner2, '&Script Scanner2')
         self.createGrapherTab()
         layout.addWidget(self.tabWidget)
         
@@ -46,10 +50,21 @@ class SQIP_GUI(QtGui.QMainWindow):
         from common.clients.script_scanner_gui.script_scanner_gui import script_scanner_gui
         widget = script_scanner_gui(reactor, cxn)
         return widget
+
+
+    def make_script_scanner2_widget(self, reactor, cxn):
+        from common.devel.bum.gui_scriptscanner2.script_scanner_gui import script_scanner_gui
+        widget = script_scanner_gui(reactor, cxn)
+        return widget
         
     
     def make_drift_tracker_widget(self, reactor, cxn):
         from common.clients.drift_tracker.drift_tracker import drift_tracker
+        widget = drift_tracker(reactor, cxn)
+        return widget
+
+    def make_drift_tracker_global_widget(self, reactor, cxn):
+        from common.clients.drift_tracker_global.drift_tracker_global import drift_tracker
         widget = drift_tracker(reactor, cxn)
         return widget
     
