@@ -39,7 +39,7 @@ datafiles,timex = [],[]
 
 #Import nbar values and fit heating rate ### 
 date2='2019Jul03'
-date1='2019_07_03'
+date1='2019_07_03' ##testcomment
 
 nbarfiles=[
 '1918_31',
