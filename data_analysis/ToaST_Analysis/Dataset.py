@@ -1,4 +1,3 @@
-from format_data_TAFanalysis import *
 from TemperatureScaling import *
 from Measurement import *
 
