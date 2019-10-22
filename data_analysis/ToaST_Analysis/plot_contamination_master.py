@@ -6,7 +6,7 @@ from uncertainties.umath import *
 
 # from plot_freqscaling_master import *
 
-
+#TODO: rewrite everything with objects, check for errors
 def get_rates_to_plot(data,days):
     rates_to_plot = []
 
