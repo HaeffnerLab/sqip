@@ -137,12 +137,12 @@ pyplot.legend()
 # Mill 5, 6, 7repeat. heat up and down.
 pyplot.figure()
 plot_temperature_scaling(data_to_temperature_scaling('postmill5_up',
-                                                     scale_to_frequency=1.0, temperature_bin=30, temp_max = 560,
+                                                     scale_to_frequency=1.0, temperature_bin=1, temp_max = 560,
                                                      color = 'blue', marker='o', plot_label='Mill 5, up'), plot_smooth = True)
 ax = plot_temperature_scaling(data_to_temperature_scaling('postmill5_down_repeat',
                                                      scale_to_frequency=1.0, temperature_bin=30, temp_max = 560,
                                                      color = 'blue', marker='x', plot_label='Mill 5, post-saturation'), plot_smooth = True)
-ax.set_ylim(ymin=0)
+ax.set_ylim(ymin=0, ymax=12)
 pyplot.legend()
 pyplot.figure()
 plot_temperature_scaling(data_to_temperature_scaling('postmill6_up',
@@ -151,7 +151,7 @@ plot_temperature_scaling(data_to_temperature_scaling('postmill6_up',
 ax=plot_temperature_scaling(data_to_temperature_scaling('postmill6_down',
                                                      scale_to_frequency=1.0, temperature_bin=30, #temp_max = 560,
                                                      color = 'purple', marker='x', plot_label='Mill 6, post-saturation'), plot_smooth = True)
-ax.set_ylim(ymin=0)
+ax.set_ylim(ymin=0, ymax=12)
 pyplot.legend()
 pyplot.figure()
 plot_temperature_scaling(data_to_temperature_scaling('postmill7_up',
@@ -160,7 +160,7 @@ plot_temperature_scaling(data_to_temperature_scaling('postmill7_up',
 ax = plot_temperature_scaling(data_to_temperature_scaling('postmill7_up_repeat',
                                                      scale_to_frequency=1.0, temperature_bin=30, temp_max = 560,
                                                      color = 'magenta', marker='x', plot_label='Mill 7, post-saturation'), plot_smooth = True)
-ax.set_ylim(ymin=0)
+ax.set_ylim(ymin=0, ymax=12)
 pyplot.legend()
 
 # Mill 7down, 8c, 8d,
@@ -199,7 +199,7 @@ ax.errorbar(295, 1.54, yerr=0.07, color = 'orange', marker = 'x')
 
 pyplot.legend()
 
-pyplot.show()
+# pyplot.show()
 
 pyplot.figure()
 plot_temperature_scaling(data_to_temperature_scaling('postmill8D_electron',
@@ -208,7 +208,7 @@ plot_temperature_scaling(data_to_temperature_scaling('postmill8D_electron',
 ax = plot_temperature_scaling(data_to_temperature_scaling('postmill8D_electron_heat',
                                                      scale_to_frequency=1.0, temperature_bin=30, #temp_max = 560,
                                                      color = 'teal', marker='x', plot_label='Electron 2, post-saturation'), plot_smooth = True)
-ax.set_ylim(ymin=0)
+ax.set_ylim(ymin=0, ymax=12)
 pyplot.legend()
 
 ## electron 2 heated, mill 8e + heat, electron 3
@@ -228,12 +228,12 @@ pyplot.legend()
 ## mill 8e + heat
 pyplot.figure()
 plot_temperature_scaling(data_to_temperature_scaling('postmill8e',
-                                                     scale_to_frequency=1.0, temperature_bin=.1, #temp_max = 560,
+                                                     scale_to_frequency=1.0, temperature_bin=30, #temp_max = 560,
                                                      color = 'blue', marker='o', plot_label='Mill 8e up'), plot_smooth = True)
 ax = plot_temperature_scaling(data_to_temperature_scaling('postheat8e',
-                                                     scale_to_frequency=1.0, temperature_bin=.1, #temp_max = 560,
+                                                     scale_to_frequency=1.0, temperature_bin=30, #temp_max = 560,
                                                      color = 'navy', marker='x', plot_label='Mill 8e, down'), plot_smooth = True)
-ax.set_ylim(ymin=0)
+ax.set_ylim(ymin=0, ymax=12)
 pyplot.legend()
 
 ##### plot temperature as a function of time
@@ -243,3 +243,4 @@ plot_heat_treatment([heat_treatment])
 ### plot room temperature rates from multiple traps as a function of time in atmosphere
 plot_multi_trap_comparison(multi_trap_comparison())
 
+pyplot.show()

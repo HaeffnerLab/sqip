@@ -142,6 +142,13 @@ def second_order_polynomial(x_input, y_input, y_errors):
     y_output = [po + p1*x + p2*x**2 for x in x_output]
     return x_output, y_output
 
+def third_order_polynomial(x_input, y_input, y_errors):
+    weights = [1 / err ** 2 for err in y_errors]
+    # returns polynomial coefficients ordered from low to high:
+    po, p1, p2, p3 = np.polynomial.polynomial.polyfit(x_input, y_input, deg=3, rcond=None, full=False, w=weights)
+    x_output = np.arange(min(x_input), max(x_input), 1)
+    y_output = [po + p1*x + p2*x**2 + p3*x**3 for x in x_output]
+    return x_output, y_output
 
 def plot_temperature_scaling(temperature_scaling, plot_data = True, plot_smooth = False):
     ax = pyplot.axes(xscale='linear', yscale='linear')
