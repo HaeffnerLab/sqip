@@ -5,7 +5,7 @@ class Dataset:
 
     def __init__(self, measurements, color='black', marker='o', line = '-', label='', last_treatment='', added_dose=0, cumulative_dose=0, smooth=True):
         # data is a list of heating rate objects that all correspond to the same temperature treatment dataset
-
+        # test
         self.measurements = measurements
         # self.smoothing_function = univariate_spline
         self.smoothing_function = second_order_polynomial
