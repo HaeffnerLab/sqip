@@ -9,6 +9,7 @@ class Dataset:
         self.measurements = measurements
         # self.smoothing_function = univariate_spline
         self.smoothing_function = second_order_polynomial
+        # self.smoothing_function = third_order_polynomial
         self.color = color
         self.label = label
         self.last_treatment = last_treatment
