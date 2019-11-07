@@ -5,18 +5,8 @@ from plot_contamination_master import *
 #TODO: rewrite everything with objects, check for errors
 
 
-# Add all the data to the "many dates" file
-# Import 'before' and 'after' heating rates for each auger
-# Calculate alpha, plot as function of 'days auger on'. Always start with 0.
-# Scale to 1.3 and 0.88 MHz, plot each separately as function of 'days auger on'
-
-# look through notes and notebook, find out how many days auger on each time, and get all the rest of the dates
-# Plot recent evolution of alpha
-# Plot temp scaling/ taf distribution before and after auger when possible (maybe only possible twice)
-# In another file, do a whole "before and after treatment" integrated taf number
-
+## Plot data before and after auger
 data_root_location = '/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Data/'
-
 
 filename = data_root_location + 'Data_ToaST/E3_roomtemp_heatingrates_manydates.txt'
 alldata = np.loadtxt(filename,skiprows=1)
@@ -100,7 +90,7 @@ for set in datasets_auger:
         color = getcolor(alpha[0],alpha[1])
         ax.errorbar(days_to_plot,alpha,yerr=alpha_err,fmt='-o',capsize=3,label=label,color=color)
 
-
+### Plot data before, immediately after, and day after milling
 #########
 
 datasets_mill = [('mill 8c',
@@ -185,8 +175,204 @@ for i in range(0,2):
 
 
 
+### Plot data with camera on and off
+#########
+
+datasets_mill = [('108 F on camera',
+    [
+        [(20191101, 1.300, ufloat(1.26, 0.050), "camera_off", 1),
+         (20191101, 0.880, ufloat(2.98, 0.180), "camera_off", 1)],
+        [(20191101, 0.880, ufloat(2.98, 0.190), "camera_on", 2),
+         (20191101,	1.300, ufloat(1.44, 0.070), "camera_on", 2)],
+        [(20191104,	1.300, ufloat(1.39, 0.060), "camera_on", 3),
+         (20191104, 0.880, ufloat(2.88, 0.160), "camera_on", 3)],
+        [(20191104,	0.880, ufloat(3.02, 0.160), "camera_off", 4),
+         (20191104, 1.300, ufloat(1.24, 0.060), "camera_off", 4)],
+        [(20191104,	1.300, ufloat(1.21, 0.060), "camera_on", 5),
+         (20191104, 0.880, ufloat(2.52, 0.170), "camera_on",5)]
+    ]
+                  ),
+        ('RT',
+    [
+        [(20191101,	1.300, ufloat(1.30, 0.050), "before heat", 1),
+         (20191101,	0.880, ufloat(2.54, 0.110), "before heat", 1)],
+        [(20191101,	0.880, ufloat(2.69, 0.170), "before heat", 1),
+         (20191101,	1.300, ufloat(1.38, 0.060), "before heat", 1)],
+        [(20191104,	0.880, ufloat(2.70, 0.160), "after heat", 2),
+         (20191104,	1.300, ufloat(1.14, 0.070), "after heat", 2)],
+        [(20191104, 1.300, ufloat(1.24, 0.070), "after heat", 2),
+         (20191104,	0.880, ufloat(2.70, 0.170), "after heat", 2)]
+    ]
+                  )
+                 ]
 
 
+alldata_1p3 = []
+alldata_p88 = []
+alldata_alphas = []
+plot_colors = ['gold', 'green']
+plot_labels = ['mill 8c', 'mill 8d']
 
+
+for set in datasets_mill:
+    alphas = []
+    data1p3 = []
+    datap88 = []
+
+    for measurement in set[1]:
+        for heatingrate in measurement:
+            if heatingrate[1] == 0.88:
+                heatingrate_p88 = heatingrate[2]
+            elif heatingrate[1] == 1.3:
+                heatingrate_1p3 = heatingrate[2]
+
+        rates = [heatingrate_p88.nominal_value, heatingrate_1p3.nominal_value]
+        rateerrs = [heatingrate_p88.std_dev, heatingrate_1p3.std_dev]
+        freqs = [0.88000, 1.3000]
+        alpha, amp = calc_single_alpha(rates,rateerrs,freqs) # alpha is type ufloat
+
+        print "alpha"
+        print alpha-1
+
+#         datap88.append(heatingrate_p88)
+#         data1p3.append(heatingrate_1p3)
+#         alphas.append(alpha)
+#     alldata_p88.append(datap88)
+#     alldata_1p3.append(data1p3)
+#     alldata_alphas.append(alphas)
+#
+# # plot 0.88
+# pyplot.figure()
+# ax = pyplot.axes(xscale='linear',yscale='linear')
+# pyplot.title('0.88 MHz')
+# pyplot.ylabel('nbar/ms')
+# # pyplot.xticks((0,1,2,4,5),('Before mill', '4 hr after mill', 'day after mill'))
+# pyplot.xlim(-.2,5.2)
+#
+# for i in range(0,1):
+#     rates = [rate.nominal_value for rate in alldata_p88[i]]
+#     rateerr = [rate.std_dev for rate in alldata_p88[i]]
+#     ax.errorbar(plot_x, rates, yerr=rateerr, fmt='-o', capsize=3, color = plot_colors[i], label=plot_labels[i])
+#
+# # plot 1.3
+# pyplot.figure()
+# ax = pyplot.axes(xscale='linear',yscale='linear')
+# pyplot.title('1.3 MHz')
+# pyplot.ylabel('nbar/ms')
+# # pyplot.xticks((0,1,2),('Before mill', '4 hr after mill', 'day after mill'))
+# pyplot.xlim(-.2,5.2)
+#
+# for i in range(0,1):
+#     rates = [rate.nominal_value for rate in alldata_1p3[i]]
+#     rateerr = [rate.std_dev for rate in alldata_1p3[i]]
+#     ax.errorbar(plot_x, rates, yerr=rateerr, fmt='-o', capsize=3, color = plot_colors[i], label=plot_labels[i])
+#
+# # plot alpha
+# pyplot.figure()
+# ax = pyplot.axes(xscale='linear',yscale='linear')
+# pyplot.title('Alpha')
+# pyplot.ylabel('nbar/ms')
+# # pyplot.xticks((0,1,2),('Before mill', '4 hr after mill', 'day after mill'))
+# pyplot.xlim(-.2,5.2)
+#
+# for i in range(0,1):
+#     alphas = [alpha.nominal_value-1 for alpha in alldata_alphas[i]]
+#     alphaerr = [alpha.std_dev for alpha in alldata_alphas[i]]
+#     ax.errorbar(plot_x, alphas, yerr=alphaerr, fmt='-o', capsize=3, color = plot_colors[i], label=plot_labels[i])
+
+
+######### Plot 108 F data when camera is on vs off
+x_camera_off = [0,3]
+x_camera_on = [1,2,4]
+alpha = [1.21, 0.86, 0.87, 1.28, 0.88]
+alpha_err = [0.19, 0.21, 0.18, 0.18, 0.21]
+heatingrate_1p3 = [1.26, 1.44, 1.39, 1.24, 1.21]
+heatingrate_1p3_err = [0.05, 0.07, 0.06, 0.06, 0.06]
+heatingrate_p88 = [2.98, 2.98, 2.88, 3.02, 2.52]
+heatingrate_p88_err = [0.18, 0.19, 0.16, 0.16, 0.17]
+
+
+# plot 1.3 MHz
+pyplot.figure()
+ax = pyplot.axes(xscale='linear',yscale='linear')
+pyplot.title('1.3 MHz, 108F')
+pyplot.ylabel('nbar/ms')
+
+for i in x_camera_off:
+    ax.errorbar(i, heatingrate_1p3[i], yerr=heatingrate_1p3_err[i], fmt='o', color = 'red', label='camera off')
+for i in x_camera_on:
+    ax.errorbar(i, heatingrate_1p3[i], yerr=heatingrate_1p3_err[i], fmt='o', color = 'green', label='camera on')
+pyplot.legend()
+
+# plot 0.88 MHz
+pyplot.figure()
+ax = pyplot.axes(xscale='linear',yscale='linear')
+pyplot.title('0.88 MHz, 108F')
+pyplot.ylabel('nbar/ms')
+pyplot.xticks((-1,1),('Before heat', 'After heat'))
+
+for i in x_camera_off:
+    ax.errorbar(i, heatingrate_p88[i], yerr=heatingrate_p88_err[i], fmt='o', color = 'red', label='camera off')
+for i in x_camera_on:
+    ax.errorbar(i, heatingrate_p88[i], yerr=heatingrate_p88_err[i], fmt='o', color = 'green', label='camera on')
+pyplot.legend()
+
+
+# plot alpha
+pyplot.figure()
+ax = pyplot.axes(xscale='linear',yscale='linear')
+pyplot.title('Alpha, 108F')
+pyplot.ylabel('alpha')
+pyplot.xticks((-1,1),('Before heat', 'After heat'))
+
+for i in x_camera_off:
+    ax.errorbar(i, alpha[i], yerr=alpha_err[i], fmt='o', color = 'red', label='camera off')
+for i in x_camera_on:
+    ax.errorbar(i, alpha[i], yerr=alpha_err[i], fmt='o', color = 'green', label='camera on')
+pyplot.legend()
+
+
+######### Plot room temperature data before and after low-temperature heating
+x = [-1,-1.05,1,1.05]
+alpha = [0.72, 0.71, 1.21, 0.99]
+alpha_err = [0.15, 0.20, 0.22, 0.22]
+heatingrate_1p3 = [1.30, 1.38, 1.14, 1.24]
+heatingrate_1p3_err = [0.05, 0.06, 0.07, 0.07]
+heatingrate_p88 = [2.54, 2.69, 2.70, 2.70]
+heatingrate_p88_err = [0.11, 0.17, 0.16, 0.17]
+
+# plot 1.3 MHz
+pyplot.figure()
+ax = pyplot.axes(xscale='linear',yscale='linear')
+pyplot.title('1.3 MHz, room temperature')
+pyplot.ylabel('nbar/ms')
+pyplot.xticks((-1,1),('Before heat', 'After heat'))
+# pyplot.xlim(-1.2,1.2)
+
+for i in range(len(x)):
+    ax.errorbar(x[i], heatingrate_1p3[i], yerr=heatingrate_1p3_err[i], fmt='o', color = 'black')
+
+# plot 0.88 MHz
+pyplot.figure()
+ax = pyplot.axes(xscale='linear',yscale='linear')
+pyplot.title('0.88 MHz, room temperature')
+pyplot.ylabel('nbar/ms')
+pyplot.xticks((-1,1),('Before heat', 'After heat'))
+# pyplot.xlim(-1.2,1.2)
+
+for i in range(len(x)):
+    ax.errorbar(x[i], heatingrate_p88[i], yerr=heatingrate_p88_err[i], fmt='o', color = 'black')
+
+
+# plot alpha
+pyplot.figure()
+ax = pyplot.axes(xscale='linear',yscale='linear')
+pyplot.title('Alpha, room temperature')
+pyplot.ylabel('alpha')
+pyplot.xticks((-1,1),('Before heat', 'After heat'))
+# pyplot.xlim(-1.2,1.2)
+
+for i in range(len(x)):
+    ax.errorbar(x[i], alpha[i], yerr=alpha_err[i], fmt='o', color = 'black')
 
 pyplot.show()
