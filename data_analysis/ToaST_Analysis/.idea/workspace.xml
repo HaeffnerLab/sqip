@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="70b79631-37d9-4e00-9331-5570b7ad7036" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Dataset.py" afterPath="$PROJECT_DIR$/Dataset.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TemperatureScaling.py" afterPath="$PROJECT_DIR$/TemperatureScaling.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/paperfigures_results.py" afterPath="$PROJECT_DIR$/paperfigures_results.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/heat_treatment.py" afterPath="$PROJECT_DIR$/heat_treatment.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_contamination.py" afterPath="$PROJECT_DIR$/plot_contamination.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plot_frequency_scaling.py" afterPath="$PROJECT_DIR$/plot_frequency_scaling.py" />
     </list>
     <ignored path="ToaST_Analysis.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,8 +30,8 @@
       <file leaf-file-name="paperfigures_results.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/paperfigures_results.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.9629629">
-              <caret line="52" column="24" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
+            <state vertical-scroll-proportion="-4.148148">
+              <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -40,7 +41,7 @@
         <entry file="file://$PROJECT_DIR$/plot_contamination.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="181" column="0" selection-start-line="181" selection-start-column="0" selection-end-line="181" selection-end-column="0" />
+              <caret line="321" column="0" selection-start-line="321" selection-start-column="0" selection-end-line="325" selection-end-column="51" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -48,11 +49,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Dataset.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="plot_contamination_master.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/plot_contamination_master.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Dataset.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Dataset.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.41237113">
-              <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+            <state vertical-scroll-proportion="-5.9259257">
+              <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -63,8 +76,8 @@
       <file leaf-file-name="dataset_factory.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dataset_factory.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.6296296">
-              <caret line="95" column="35" selection-start-line="95" selection-start-column="35" selection-end-line="95" selection-end-column="35" />
+            <state vertical-scroll-proportion="-5.037037">
+              <caret line="19" column="83" selection-start-line="19" selection-start-column="72" selection-end-line="19" selection-end-column="83" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -72,11 +85,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TemperatureScaling.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TemperatureScaling.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TemperatureScaling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="149" column="64" selection-start-line="149" selection-start-column="64" selection-end-line="149" selection-end-column="64" />
+            <state vertical-scroll-proportion="0.2554217">
+              <caret line="93" column="4" selection-start-line="93" selection-start-column="4" selection-end-line="93" selection-end-column="4" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -84,7 +97,38 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="plot_frequency_scaling.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/plot_frequency_scaling.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="17" column="29" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="heat_treatment.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/heat_treatment.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="269" column="41" selection-start-line="269" selection-start-column="41" selection-end-line="269" selection-end-column="41" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -95,18 +139,20 @@
         <option value="$PROJECT_DIR$/dataset_factory.py" />
         <option value="$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/plot_contamination_master.py" />
         <option value="$PROJECT_DIR$/plot_contamination_master.py" />
-        <option value="$PROJECT_DIR$/plot_contamination.py" />
         <option value="$PROJECT_DIR$/paperfigures_results.py" />
-        <option value="$PROJECT_DIR$/TemperatureScaling.py" />
-        <option value="$PROJECT_DIR$/Dataset.py" />
         <option value="$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/Auger/Auger_plotting.py" />
+        <option value="$PROJECT_DIR$/Dataset.py" />
+        <option value="$PROJECT_DIR$/plot_contamination.py" />
+        <option value="$PROJECT_DIR$/TemperatureScaling.py" />
+        <option value="$PROJECT_DIR$/heat_treatment.py" />
+        <option value="$PROJECT_DIR$/plot_frequency_scaling.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="4" />
+    <option name="x" value="20" />
     <option name="y" value="23" />
-    <option name="width" value="1280" />
+    <option name="width" value="1258" />
     <option name="height" value="777" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -161,58 +207,7 @@
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/Auger/Auger_plotting.py" />
   </component>
-  <component name="RunManager" selected="Python.plot_Thomas">
-    <configuration default="false" name="Thomas_Normalized_element_peaks" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/Auger" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="ToaST_Analysis" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/Auger/Thomas_Normalized_element_peaks.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Thomas_Plot_Process_Auger_scans" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/Auger" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="ToaST_Analysis" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/Auger/Thomas_Plot_Process_Auger_scans.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Thomas_Does_different_things_like_sputter" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/Auger" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="ToaST_Analysis" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/Auger/Thomas_Does_different_things_like_sputter.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.heat_treatment">
     <configuration default="false" name="Auger_plotting" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -243,6 +238,57 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="ToaST_Analysis" />
       <option name="SCRIPT_NAME" value="$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/Auger/plot_Thomas.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="plot_contamination" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ToaST_Analysis" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/plot_contamination.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="plot_frequency_scaling" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ToaST_Analysis" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/plot_frequency_scaling.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="heat_treatment" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ToaST_Analysis" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/heat_treatment.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -370,19 +416,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.Thomas_Normalized_element_peaks" />
-      <item index="1" class="java.lang.String" itemvalue="Python.Thomas_Plot_Process_Auger_scans" />
-      <item index="2" class="java.lang.String" itemvalue="Python.Thomas_Does_different_things_like_sputter" />
-      <item index="3" class="java.lang.String" itemvalue="Python.Auger_plotting" />
-      <item index="4" class="java.lang.String" itemvalue="Python.plot_Thomas" />
+      <item index="0" class="java.lang.String" itemvalue="Python.Auger_plotting" />
+      <item index="1" class="java.lang.String" itemvalue="Python.plot_Thomas" />
+      <item index="2" class="java.lang.String" itemvalue="Python.plot_contamination" />
+      <item index="3" class="java.lang.String" itemvalue="Python.plot_frequency_scaling" />
+      <item index="4" class="java.lang.String" itemvalue="Python.heat_treatment" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.plot_Thomas" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Auger_plotting" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Thomas_Normalized_element_peaks" />
-        <item index="3" class="java.lang.String" itemvalue="Python.Thomas_Does_different_things_like_sputter" />
-        <item index="4" class="java.lang.String" itemvalue="Python.Thomas_Plot_Process_Auger_scans" />
+        <item index="0" class="java.lang.String" itemvalue="Python.heat_treatment" />
+        <item index="1" class="java.lang.String" itemvalue="Python.plot_frequency_scaling" />
+        <item index="2" class="java.lang.String" itemvalue="Python.plot_contamination" />
+        <item index="3" class="java.lang.String" itemvalue="Python.plot_Thomas" />
+        <item index="4" class="java.lang.String" itemvalue="Python.Auger_plotting" />
       </list>
     </recent_temporary>
   </component>
@@ -407,10 +453,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="4" y="23" width="1280" height="777" extended-state="6" />
+    <frame x="20" y="23" width="1258" height="777" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11517077" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.117219076" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32776934" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
@@ -470,54 +516,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/plot_contamination_master.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="36" selection-start-line="49" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/plot_contamination.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="181" column="0" selection-start-line="181" selection-start-column="0" selection-end-line="181" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/paperfigures_results.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.9629629">
-          <caret line="52" column="24" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dataset_factory.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.6296296">
-          <caret line="95" column="35" selection-start-line="95" selection-start-column="35" selection-end-line="95" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TemperatureScaling.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="149" column="64" selection-start-line="149" selection-start-column="64" selection-end-line="149" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Dropbox/Data_and_Plotting_SQIP/Auger/Thomas_Plot_Process_Auger_scans.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.3333335">
@@ -558,10 +556,78 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Dataset.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41237113">
-          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+        <state vertical-scroll-proportion="-5.9259257">
+          <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paperfigures_results.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.148148">
+          <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_contamination.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="321" column="0" selection-start-line="321" selection-start-column="0" selection-end-line="325" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_contamination_master.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dataset_factory.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.037037">
+          <caret line="19" column="83" selection-start-line="19" selection-start-column="72" selection-end-line="19" selection-end-column="83" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/heat_treatment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="269" column="41" selection-start-line="269" selection-start-column="41" selection-end-line="269" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plot_frequency_scaling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="29" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TemperatureScaling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2554217">
+          <caret line="93" column="4" selection-start-line="93" selection-start-column="4" selection-end-line="93" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
