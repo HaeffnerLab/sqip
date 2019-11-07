@@ -99,7 +99,7 @@ def average_data(measurements):
     weights = [error**-2 for error in heatingrate_errors]
 
     heatingrate_average = np.sum(np.multiply(heatingrates,weights))/np.sum(weights)
-    heatingrate_error_average = np.sqrt(1/np.sum(weights))
+    heatingrate_error_average = np.sqrt(1/np.sum(weights)) 
     temperature_average = np.sum(np.multiply(temperatures,weights))/np.sum(weights)
 
     data_averaged = Measurement()
