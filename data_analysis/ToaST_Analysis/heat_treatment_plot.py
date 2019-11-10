@@ -3,7 +3,7 @@ import numpy as np
 import pint
 ureg = pint.UnitRegistry()
 from matplotlib import pyplot
-from importdata import *
+from import_data import *
 from Dataset import *
 from uncertainties import umath
 from scipy import optimize as op

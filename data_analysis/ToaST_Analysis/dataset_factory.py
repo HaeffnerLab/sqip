@@ -1,5 +1,5 @@
 from Dataset import *
-from importdata import *
+from import_data import *
 
 
 ## This dictionary contains immutable properties of the dataset:
