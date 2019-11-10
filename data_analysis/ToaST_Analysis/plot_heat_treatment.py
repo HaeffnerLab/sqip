@@ -6,14 +6,16 @@ from matplotlib import pyplot
 from importdata import *
 from Dataset import *
 from uncertainties import umath
+from scipy import optimize as op
+
+
+data_root_location = '/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Data/'
 
 
 
+#### plot temperature as a function of time
 
-
-##### plot temperature as a function of time
-
-filename, temperature_calibration  = '../Data/Data_scraped_for_ToaST/Week_of_09_23_2019_-_temp_scaling_post_mill_10.csv', 'android_new_lens'
+filename, temperature_calibration  = data_root_location + 'Data_scraped_for_ToaST/Week_of_09_23_2019_-_temp_scaling_post_mill_10.csv', 'android_new_lens'
 allmeasurements = import_scraped_temperature_scaling_data(filename, temperature_calibration)
 measurements = [measurement for measurement in allmeasurements if measurement.times_in_hours and measurement.temperature > 500]
 # measurements = measurements[0:12]
@@ -269,14 +271,14 @@ print '44 kJ/mol ~ 0.5 eV'
 
 R = 8.3145 * ureg.J / (ureg.mol * ureg.K)
 k1=ufloat(.50,.16) #* 1/ ureg.day
-T1 = ufloat(570.0,4.0) #* ureg.K
-half_life_1 = log(2)/k1
+T1 = ufloat(556.0,4.0) #* ureg.K
+half_life_1 = np.log(2)/k1
 
 k2=ufloat(.56,.22) #* 1/ureg.day
 T2 = ufloat(577.0,2.0) #* ureg.K
-half_life_2 = log(2)/k2
+half_life_2 = np.log(2)/k2
 
-print "half life 570 K: " + str(half_life_1)
+print "half life 556 K: " + str(half_life_1)
 print "half life 577 K: " + str(half_life_2)
 
 E = umath.log((k1/k2)) * 8.3145 / (-1/T1 + 1/T2) /1000

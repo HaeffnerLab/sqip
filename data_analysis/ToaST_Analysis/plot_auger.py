@@ -1,5 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+import auger_master as ft
+
+### Plot various elements as a function of milling dose, and plot % increase in heating rates as a function of milling dose ###
 
 '''
 Z2= 79. #Atomic number of element of substrate
@@ -259,6 +263,55 @@ ax2.tick_params(axis='y', labelcolor='r')
 
 ax2.set_title("% change heating rate, Al concentration vs Milling dose")
 fig.tight_layout()  # otherwise the right y-label is slightly clintensity_peak2peak_ed
+
+
+### Plot full auger spectra ####
+
+
+
+plt.figure()
+Y=0
+SGWL=17
+SGP=2
+
+
+dir='/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Auger/AugerData/PrinceEdward_2017-2019/'
+
+energy,readout,peaks0 = ft.import_data(dir+'2018Jun22_fullscan.aes',265,275,Y)
+readout=[i+1 for i in readout]
+y=readout
+# y=scipy.signal.savgol_filter(y,SGWL,SGP)
+plt.plot(energy,y,'r',label="Pre Mill")
+
+energy,readout,peaks0 = ft.import_data(dir+'fullscan_2019May06.aes',265,275,Y)
+readout=[i+.3 for i in readout]
+y=readout
+# y=scipy.signal.savgol_filter(y,SGWL,SGP)
+plt.plot(energy,y,color='gold',label="Post Mill 6")
+
+
+
+energy,readout,peaks0 = ft.import_data(dir+'fullscan_2019Jun03_1s_Normal_direction.aes',265,275,Y)
+#readout=[i*-1 for i in readout]
+readout=[i for i in readout]
+y=readout
+# y=scipy.signal.savgol_filter(y,SGWL,SGP)
+plt.plot(energy,y,'green',label="Post Mill 7")
+
+
+energy,readout,peaks0 = ft.import_data(dir+'2019Jul15_after_mill8D_1924_highres_Al.aes',265,275,Y)
+#readout=[i*-1 for i in readout]
+readout=[i-.6 for i in readout]
+y=readout
+# y=scipy.signal.savgol_filter(y,SGWL,SGP)
+plt.plot(energy,y,color='b',label="Post Mill 8")
+
+plt.legend(loc='lower left')
+plt.title("Aluminum")
+
+
+### plot depth profile ###
+
 
 
 plt.show()
