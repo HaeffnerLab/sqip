@@ -7,7 +7,7 @@ from import_data import *
 from Dataset import *
 from uncertainties import umath
 from scipy import optimize as op
-from dataset_factory import *
+from heat_treatment_factory import *
 
 data_root_location = '/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Data/'
 

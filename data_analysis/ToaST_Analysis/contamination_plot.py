@@ -1,7 +1,7 @@
 from matplotlib import pyplot
 import numpy as np
 from contamination_master import *
-from dataset_factory import *
+from contamination_factory import *
 
 #TODO: rewrite everything with objects, check for errors
 
