@@ -9,7 +9,7 @@ from importdata import *
 
 data_root_location = '/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Data/'
 
-dataset_factory_dictionary = {
+temperature_scaling_factory_dictionary = {
     # 'name_of_data': (list_of measurements,
     #                  'last_treatment', 'added dose per surface atom', 'cumulative dose per surface atom'),
     'preauger_13June2018' : (import_handformatted_datafile(data_root_location + 'Data_ToaST/E3_tempscaling_13Jun2018.txt', 'power5'),
@@ -96,7 +96,7 @@ def data_to_temperature_scaling(dictionary_key,
         plot_label = dictionary_key
     if plot_label == 'do_not_label':
         plot_label = None
-    measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = dataset_factory_dictionary[dictionary_key]
+    measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = temperature_scaling_factory_dictionary[dictionary_key]
     dataset = Dataset(measurements, color, marker, line, plot_label, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom, smooth=smooth)
     if get_frequency and not scale_to_frequency:
         temperature_scaling = dataset.get_single_frequency(get_frequency)
@@ -116,7 +116,7 @@ def data_to_dataset(dictionary_key,
         plot_label = dictionary_key
     if plot_label == 'do_not_label':
         plot_label = None
-    measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = dataset_factory_dictionary[dictionary_key]
+    measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = temperature_scaling_factory_dictionary[dictionary_key]
     dataset = Dataset(measurements, color, plot_label, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom)
     return dataset
 
