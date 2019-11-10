@@ -1,7 +1,7 @@
 import csv
 from collections import deque
 from itertools import islice
-from Measurement_Multi_Trap_Comparison import *
+from Contamination_Measurement_Multi_Trap_Comparison import *
 from Measurement import Measurement
 from uncertainties import ufloat
 

@@ -1,4 +1,5 @@
 from temperature_scaling_factory import *
+from treatment_summary_functions import *
 
 ## electron bombardment: marker = "d", line = ':'
 ## heat: marker = 'x', line = '-'
