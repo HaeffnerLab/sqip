@@ -16,8 +16,8 @@ def depth_profile_plot(doses, metal_profiles):
         plt.barh(doses, proportion, height=10, label=label, color=color, left=left)
         left = left + proportion
 
-    plt.ylabel("Percentages")
-    plt.xlabel("Doses")
+    plt.ylabel("Doses")
+    plt.xlabel("Percentages")
     plt.legend(loc="upper right")
     plt.title("Percentage of Element by Milling Dose")
 
