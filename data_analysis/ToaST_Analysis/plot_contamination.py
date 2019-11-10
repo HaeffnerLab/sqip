@@ -1,8 +1,12 @@
 from matplotlib import pyplot
 import numpy as np
-from plot_contamination_master import *
+from contamination_master import *
+from dataset_factory import *
 
 #TODO: rewrite everything with objects, check for errors
+
+### plot room temperature rates from multiple traps as a function of time in atmosphere
+plot_multi_trap_comparison(multi_trap_comparison())
 
 
 ## Plot data before and after auger

@@ -7,11 +7,13 @@ from importdata import *
 from Dataset import *
 from uncertainties import umath
 from scipy import optimize as op
-
+from dataset_factory import *
 
 data_root_location = '/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Data/'
 
-
+##### plot temperature as a function of time
+heat_treatment = heat_treatment_mill7(color = 'purple')
+plot_heat_treatment([heat_treatment])
 
 #### plot temperature as a function of time
 
