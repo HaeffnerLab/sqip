@@ -1,5 +1,5 @@
-from temperature_scaling_factory import *
-
+from dataset_factory import *
+from functions_plotting import plot_temperature_scaling
 
 ## electron bombardment: marker = "d", line = ':'
 ## heat: marker = 'x', line = '-'
@@ -9,6 +9,7 @@ from temperature_scaling_factory import *
 #
 # post  bake, electron  bombardment 1 baseline data - scaled to 1 MHz
 pyplot.figure()
+[('preauger_13June2018','black','x',)]
 plot_temperature_scaling(data_to_temperature_scaling('preauger_13June2018',
                                                      get_frequency=1.0, temperature_bin=30,
                                                      color = 'black', marker='x', plot_label='No treatment'), plot_smooth = True)

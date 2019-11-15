@@ -1,7 +1,6 @@
-import numpy as np
-from Measurement import *
-from scipy.interpolate import UnivariateSpline
-from matplotlib import pyplot
+from _Measurement import *
+from _Dataset import get_linetype
+
 
 class TemperatureScaling:
 
@@ -116,51 +115,3 @@ def average_data(measurements):
     return data_averaged
 
 
-def get_linetype(last_treatment):
-    linetype = {
-	"electron_bombardment" : ':',
-    "heating" : '-',
-    "argon_milling" : '--'
-	}
-    return linetype.get(last_treatment)
-
-def univariate_spline(x_input, y_input, y_errors):
-    weights = [1 / err for err in y_errors]
-    bbox = [min(x_input), max(y_input)]
-    # bbox = [0,800]
-    smoothingpolynomial = 2
-    numberofknots = 100
-    uspline = UnivariateSpline(x_input, y_input, weights, k=smoothingpolynomial, s=numberofknots, ext=1, bbox=bbox)
-    x_output = np.arange(min(x_input), max(x_input), 1)
-    return x_output, uspline(x_output)
-
-def second_order_polynomial(x_input, y_input, y_errors):
-    weights = [1 / err ** 2 for err in y_errors]
-    # returns polynomial coefficients ordered from low to high:
-    po, p1, p2 = np.polynomial.polynomial.polyfit(x_input, y_input, deg=2, rcond=None, full=False, w=weights)
-    x_output = np.arange(min(x_input), max(x_input), 1)
-    y_output = [po + p1*x + p2*x**2 for x in x_output]
-    return x_output, y_output
-
-def third_order_polynomial(x_input, y_input, y_errors):
-    weights = [1 / err ** 2 for err in y_errors]
-    # returns polynomial coefficients ordered from low to high:
-    po, p1, p2, p3 = np.polynomial.polynomial.polyfit(x_input, y_input, deg=3, rcond=None, full=False, w=weights)
-    x_output = np.arange(min(x_input), max(x_input), 1)
-    y_output = [po + p1*x + p2*x**2 + p3*x**3 for x in x_output]
-    return x_output, y_output
-
-def plot_temperature_scaling(temperature_scaling, plot_data = True, plot_smooth = False):
-    ax = pyplot.axes(xscale='linear', yscale='linear')
-
-    pyplot.xlabel('Temperature (K)')
-    pyplot.ylabel('nbar/ms')
-    # pyplot.title('Heating rates as a function of temperature')
-
-    if plot_data:
-        ax.errorbar(temperature_scaling.temperatures, temperature_scaling.heatingrates, yerr=temperature_scaling.heatingrate_errors, fmt=temperature_scaling.marker, label=temperature_scaling.label, color=temperature_scaling.color)
-        # ax.errorbar(temperature_scaling.temperatures, temperature_scaling.heatingrates, yerr=temperature_scaling.heatingrate_errors, fmt='o', label=temperature_scaling.label, color=temperature_scaling.color)
-
-    if plot_smooth:
-        ax.plot(temperature_scaling.temperatures_smooth,  temperature_scaling.heatingrates_smooth, linestyle = temperature_scaling.line, color=temperature_scaling.color)
-    return ax

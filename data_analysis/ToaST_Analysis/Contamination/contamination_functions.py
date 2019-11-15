@@ -1,10 +1,8 @@
 from matplotlib import pyplot
 import numpy as np
 from scipy import optimize as op
-from uncertainties import *
-from uncertainties.umath import *
-
-# from plot_freqscaling_master import *
+from uncertainties import ufloat
+from uncertainties import umath
 
 #TODO: rewrite everything with objects, check for errors
 def get_rates_to_plot(data,days):
@@ -107,7 +105,7 @@ def calc_single_alpha(rates,errors,freqs):
         rate1 = ufloat(rates[1],errors[1])
         freq0 = ufloat(freqs[0],0)
         freq1 = ufloat(freqs[1],0)
-        alpha = abs(log(rate0/rate1)/log(freq0/freq1))
+        alpha = abs(umath.log(rate0/rate1)/umath.log(freq0/freq1))
 
         amp = rate0*freq0**(alpha)
         return alpha,amp

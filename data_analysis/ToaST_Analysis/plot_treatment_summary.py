@@ -1,5 +1,5 @@
-from temperature_scaling_factory import *
-from treatment_summary_functions import *
+from dataset_factory import *
+from functions_plotting import plot_cumulative_dose, plot_added_dose
 
 ## electron bombardment: marker = "d", line = ':'
 ## heat: marker = 'x', line = '-'

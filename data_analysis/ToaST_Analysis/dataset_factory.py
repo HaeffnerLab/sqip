@@ -1,15 +1,17 @@
-from Dataset import *
-from import_data import *
+from _Dataset import *
+from _Dataset import Dataset
+from functions_import_data import *
 
 
 ## This dictionary contains immutable properties of the dataset:
 ##      file name, import function, and temperature calibration
 ## The functions take as arguments the properties that we want to be able to change easily:
 ##      max & min temperature, temperature binning window, trap frequency, plot label, plot color
+from functions_import_data import import_scraped_temperature_scaling_data
 
 data_root_location = '/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Data/'
 
-temperature_scaling_factory_dictionary = {
+dataset_factory_dictionary = {
     # 'name_of_data': (list_of measurements,
     #                  'last_treatment', 'added dose per surface atom', 'cumulative dose per surface atom'),
     'preauger_13June2018' : (import_handformatted_datafile(data_root_location + 'Data_ToaST/E3_tempscaling_13Jun2018.txt', 'power5'),
@@ -96,7 +98,7 @@ def data_to_temperature_scaling(dictionary_key,
         plot_label = dictionary_key
     if plot_label == 'do_not_label':
         plot_label = None
-    measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = temperature_scaling_factory_dictionary[dictionary_key]
+    measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = dataset_factory_dictionary[dictionary_key]
     dataset = Dataset(measurements, color, marker, line, plot_label, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom, smooth=smooth)
     if get_frequency and not scale_to_frequency:
         temperature_scaling = dataset.get_single_frequency(get_frequency)
@@ -106,7 +108,6 @@ def data_to_temperature_scaling(dictionary_key,
     if scale_to_frequency and not get_frequency:
         dataset.measurements = [measurement.scale_to_frequency(scale_to_frequency) for measurement in dataset.measurements]
         temperature_scaling = dataset.get_single_frequency(scale_to_frequency)
-
     return temperature_scaling.get_temperature_subset(temp_min, temp_max).bin_similar_temperatures(temperature_bin)
 
 def data_to_dataset(dictionary_key,
@@ -116,6 +117,13 @@ def data_to_dataset(dictionary_key,
         plot_label = dictionary_key
     if plot_label == 'do_not_label':
         plot_label = None
-    measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = temperature_scaling_factory_dictionary[dictionary_key]
+    measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = dataset_factory_dictionary[dictionary_key]
     dataset = Dataset(measurements, color, plot_label, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom)
+    return dataset
+
+
+def heat_treatment_mill7(color = 'black', label = 'mill7'):
+    filename = data_root_location + 'Data_scraped_for_ToaST/Week_of_06_04_2019_-_temperature_scaling_after_mill_7_2.csv'
+    temperature_calibration = 'android_new_lens'
+    dataset = Dataset(import_scraped_temperature_scaling_data(filename, temperature_calibration), color = color, label = label)
     return dataset

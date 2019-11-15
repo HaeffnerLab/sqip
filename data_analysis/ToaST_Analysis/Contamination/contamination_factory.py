@@ -1,7 +1,8 @@
-from Dataset import *
-from import_data import *
+from contamination_import_data import *
+
 
 data_root_location = '/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Data/'
+
 
 def multi_trap_comparison():
     #TODO: correct error given beta could be 2 or 4

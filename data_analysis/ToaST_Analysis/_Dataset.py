@@ -1,5 +1,6 @@
-from Temperature_Scaling import *
-from Measurement import *
+from _TemperatureScaling import *
+from functions_fitting import second_order_polynomial
+
 
 class Dataset:
 
@@ -68,18 +69,23 @@ class Dataset:
         binned_dataset = Dataset(data_averaged, color=self.color, label=self.label, last_treatment=self.last_treatment, added_dose=self.added_dose, cumulative_dose=self.cumulative_dose)
         return binned_dataset
 
+    def extract_all_temperature_scalings(self):
+        #TODO fill in this function
+        return
+
+    def extract_all_frequency_scalings(self):
+        #TODO fill in this function
+        return
+
 def get_measured_frequencies(measurements):
     measured_frequencies = set([measurement.trap_frequency for measurement in measurements])
     return measured_frequencies
 
-def plot_heat_treatment(datasets):
-    pyplot.figure()
-    ax = pyplot.axes(xscale='linear', yscale='linear')
-    pyplot.xlabel('Time(days)')
-    pyplot.ylabel('Temperature(K)')
-    pyplot.title('Heat Treatment Post Mill 7')
-
-    for dataset in datasets:
-        ax.plot(dataset.get_relative_times_day(), dataset.temperatures, color=dataset.color, label = dataset.label, linewidth=.5)
-
+def get_linetype(last_treatment):
+    linetype = {
+	"electron_bombardment" : ':',
+    "heating" : '-',
+    "argon_milling" : '--'
+	}
+    return linetype.get(last_treatment)
 

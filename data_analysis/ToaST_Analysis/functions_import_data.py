@@ -1,10 +1,9 @@
 import csv
 from collections import deque
 from itertools import islice
-from Contamination_Measurement_Multi_Trap_Comparison import *
-from Measurement import Measurement
+import numpy as np
+from _Measurement import Measurement
 from uncertainties import ufloat
-
 
 ## Measurement object takes "raw_data" is a list of the form:
 ##      ('date',
@@ -100,40 +99,4 @@ def extract_times(string):
     for time in times:
         if len(time)>8: timelist.append(time[-8:-1])
     return timelist
-
-
-def format_multi_trap_comparison(line):
-    ## Measurement_Multi_Trap_Comparison object takes "raw_data" is a list of the form:
-    ##      ['trap name',
-    ##       trapping_height_um,
-    ##       trap_frequency_MHz,
-    ##       days_in_atmosphere,
-    ##       weeks_baked
-    ##       ufloat(heatingrate,error),
-    ##       times_broke_vacuum,
-    ##       'evaporation_date']
-
-    trap_name = line[0]
-    trapping_height_um = float(line[1])
-    trap_frequency_MHz = float(line[2])
-    days_in_atmosphere = float(line[3])
-    weeks_baked = float(line[4])
-    heatingrate = ufloat(line[5].split('+')[0], line[5].split('-')[1])
-    times_broke_vacuum = float(line[6])
-    evaporation_date = line[7]
-
-    return trap_name, trapping_height_um, trap_frequency_MHz, days_in_atmosphere, weeks_baked, heatingrate, times_broke_vacuum, evaporation_date
-
-def import_multi_trap_comparison_data(filename):
-    reader = csv.reader(open(filename))
-    # skip header line
-    next(reader)
-
-    heatingrate_list = []
-    for line in reader:
-        trap_name, trapping_height_um, trap_frequency_MHz, days_in_atmosphere, weeks_baked, heatingrate, times_broke_vacuum, evaporation_date = format_multi_trap_comparison(line)
-        heatingrate_list.append(Measurement_Multi_Trap_Comparison(trap_name, trapping_height_um, trap_frequency_MHz, days_in_atmosphere, weeks_baked, heatingrate, times_broke_vacuum, evaporation_date))
-
-    return heatingrate_list
-
 

@@ -1,4 +1,47 @@
+import numpy as np
 from matplotlib import pyplot
+
+from functions_fitting import fit_freq_scaling, exponential_fit
+
+
+def plot_freq_scaling(ax,filename,skiprows,label,mycolor,fmt='o',dotsize=3):
+    #TODO rewrite this
+        mydata = np.loadtxt(filename,skiprows=skiprows)
+        date = np.array(mydata[:,0])
+        freq = np.array(mydata[:,1])
+        rate = np.array(mydata[:,2])
+        error = np.array(mydata[:,3])
+
+        inds = np.argsort(freq)
+        freq = freq[inds]
+        rate = rate[inds]
+        error = error[inds]
+
+        amp, amp_err, alpha, alpha_err = fit_freq_scaling(freq, rate, error, label=label)
+        ax.errorbar(freq,rate,yerr=error,color=mycolor,fmt=fmt,label=label,capsize=3)
+
+        x = np.linspace(.47, 2, num=300)
+        rate_fit = exponential_fit(x, amp, alpha)
+        ax.plot(x,rate_fit,color = 'black')
+
+        # ax.tick_params(labelsize=14,which='both')
+        return
+
+
+def plot_temperature_scaling(temperature_scaling, plot_data = True, plot_smooth = False):
+    ax = pyplot.axes(xscale='linear', yscale='linear')
+
+    pyplot.xlabel('Temperature (K)')
+    pyplot.ylabel('nbar/ms')
+    # pyplot.title('Heating rates as a function of temperature')
+
+    if plot_data:
+        ax.errorbar(temperature_scaling.temperatures, temperature_scaling.heatingrates, yerr=temperature_scaling.heatingrate_errors, fmt=temperature_scaling.marker, label=temperature_scaling.label, color=temperature_scaling.color)
+        # ax.errorbar(temperature_scaling.temperatures, temperature_scaling.heatingrates, yerr=temperature_scaling.heatingrate_errors, fmt='o', label=temperature_scaling.label, color=temperature_scaling.color)
+
+    if plot_smooth:
+        ax.plot(temperature_scaling.temperatures_smooth,  temperature_scaling.heatingrates_smooth, linestyle = temperature_scaling.line, color=temperature_scaling.color)
+    return ax
 
 
 def plot_cumulative_dose(temperature_scalings, plot_500K = False, plot_295K = False, label = [0]):
@@ -56,10 +99,6 @@ def plot_cumulative_dose(temperature_scalings, plot_500K = False, plot_295K = Fa
     pyplot.legend()
 
 
-
-
-
-###
 def plot_added_dose(temperature_scalings):
     heatingrates_295K = []
     heatingrates_500K = []
@@ -130,4 +169,3 @@ def plot_added_dose(temperature_scalings):
 
         ax.plot(dose, rate_RT, marker = marker, color = 'blue', label = labelRT)
     pyplot.legend()
-

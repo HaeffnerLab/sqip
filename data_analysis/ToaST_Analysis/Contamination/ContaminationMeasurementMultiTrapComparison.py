@@ -2,11 +2,11 @@ from datetime import timedelta
 from datetime import datetime
 from time import mktime
 import numpy as np
-from Measurement import *
+from _Measurement import *
 from matplotlib import pyplot
 
 
-class Measurement_Multi_Trap_Comparison():
+class ContaminationMeasurementMultiTrapComparison():
 
     def __init__(self,trap_name, trapping_height_um, trap_frequency_MHz, days_in_atmosphere, weeks_baked, heatingrate, times_broke_vacuum, evaporation_date):
         ##      'trap_name',
@@ -36,7 +36,7 @@ class Measurement_Multi_Trap_Comparison():
 
 
 def scale_to_distance(new_distance_um, measurement_multi_trap_comparison, beta=2.6):
-    #TODO: get error assuming beta is between 4 and 2
+    #TODO: get error assuming beta is between 4 and 2.6
     scaled_data = deepcopy(measurement_multi_trap_comparison)
     scaled_data.trapping_height = new_distance_um
     scaled_data.heatingrate = measurement_multi_trap_comparison.heatingrate * (measurement_multi_trap_comparison.trapping_height**beta) / (new_distance_um**beta)

@@ -277,37 +277,53 @@ SGP=2
 
 dir='/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Auger/AugerData/PrinceEdward_2017-2019/'
 
-energy,readout,peaks0 = ft.import_data(dir+'2018Jun22_fullscan.aes',265,275,Y)
-readout=[i+1 for i in readout]
-y=readout
-# y=scipy.signal.savgol_filter(y,SGWL,SGP)
-plt.plot(energy,y,'r',label="Pre Mill")
-
-energy,readout,peaks0 = ft.import_data(dir+'fullscan_2019May06.aes',265,275,Y)
-readout=[i+.3 for i in readout]
-y=readout
-# y=scipy.signal.savgol_filter(y,SGWL,SGP)
-plt.plot(energy,y,color='gold',label="Post Mill 6")
-
+# energy,readout,peaks0 = ft.import_data(dir+'2018Jun22_fullscan.aes',265,275,Y)
+# readout=[i+1 for i in readout]
+# y=readout
+# # y=scipy.signal.savgol_filter(y,SGWL,SGP)
+# plt.plot(energy,y,'r',label="Pre Mill")
+#
+# energy,readout,peaks0 = ft.import_data(dir+'fullscan_2019May06.aes',265,275,Y)
+# readout=[i+.3 for i in readout]
+# y=readout
+# # y=scipy.signal.savgol_filter(y,SGWL,SGP)
+# plt.plot(energy,y,color='gold',label="Post Mill 6")
+#
 
 
 energy,readout,peaks0 = ft.import_data(dir+'fullscan_2019Jun03_1s_Normal_direction.aes',265,275,Y)
 #readout=[i*-1 for i in readout]
+readout=[i+1 for i in readout]
+y=readout
+# y=scipy.signal.savgol_filter(y,SGWL,SGP)
+plt.plot(energy,y,'blue',label="Post Mill 7")
+
+
+energy,readout,peaks0 = ft.import_data(dir+'fullscan_2019_Jun24_afterHeating7_1629.aes',265,275,Y)
+#readout=[i*-1 for i in readout]
 readout=[i for i in readout]
 y=readout
 # y=scipy.signal.savgol_filter(y,SGWL,SGP)
-plt.plot(energy,y,'green',label="Post Mill 7")
+plt.plot(energy,y,'red',label="Post Heat 7")
+
+# energy,readout,peaks0 = ft.import_data(dir+'2019Jul15_after_mill8D_1924_highres_Al.aes',265,275,Y)
+# #readout=[i*-1 for i in readout]
+# readout=[i-.6 for i in readout]
+# y=readout
+# # y=scipy.signal.savgol_filter(y,SGWL,SGP)
+# plt.plot(energy,y,color='b',label="Post Mill 8")
 
 
-energy,readout,peaks0 = ft.import_data(dir+'2019Jul15_after_mill8D_1924_highres_Al.aes',265,275,Y)
+energy,readout,peaks0 = ft.import_data(dir+'2019Sep20_after_mill_10_fullscan_3s.aes',265,275,Y)
 #readout=[i*-1 for i in readout]
-readout=[i-.6 for i in readout]
+readout=[i-1 for i in readout]
 y=readout
 # y=scipy.signal.savgol_filter(y,SGWL,SGP)
-plt.plot(energy,y,color='b',label="Post Mill 8")
+plt.plot(energy,y,'black',label="Post Mill 10")
+
 
 plt.legend(loc='lower left')
-plt.title("Aluminum")
+# plt.title("Aluminum")
 
 
 ### plot depth profile ###

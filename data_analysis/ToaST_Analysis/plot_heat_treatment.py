@@ -1,15 +1,24 @@
-import numericalunits
-import numpy as np
 import pint
 ureg = pint.UnitRegistry()
-from matplotlib import pyplot
-from import_data import *
-from Dataset import *
 from uncertainties import umath
 from scipy import optimize as op
-from heat_treatment_factory import *
+from dataset_factory import heat_treatment_mill7
+from _Dataset import Dataset
+from functions_import_data import *
+from matplotlib import pyplot
 
 data_root_location = '/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Data/'
+
+def plot_heat_treatment(datasets):
+    pyplot.figure()
+    ax = pyplot.axes(xscale='linear', yscale='linear')
+    pyplot.xlabel('Time(days)')
+    pyplot.ylabel('Temperature(K)')
+    pyplot.title('Heat Treatment Post Mill 7')
+
+    for dataset in datasets:
+        ax.plot(dataset.get_relative_times_day(), dataset.temperatures, color=dataset.color, label = dataset.label, linewidth=.5)
+
 
 ##### plot temperature as a function of time
 heat_treatment = heat_treatment_mill7(color = 'purple')
@@ -55,38 +64,38 @@ def fit_noisegrowth(days,rates,rateerrors):
     k = ufloat(popt[2],perr[2])
     return heatingrate0,multiplier,k
 
-data_570 =[ ('20190925', 3, 0.88, ['1622_39'], ufloat(3.00, 0.14), 1.58, -1.490, 363),
+data_556 =[ ('20190925', 3, 0.88, ['1622_39'], ufloat(3.00, 0.14), 1.58, -1.490, 363),
         ('20190925', 3, 0.88, ['1910_01'], ufloat(3.01, 0.17), 1.58, -1.490, 363),
         ('20190926', 3, 0.88, ['1154_33'], ufloat(3.49, 0.13), 1.60, -1.500, 360),
         ('20190926', 3, 0.88, ['1731_57'], ufloat(3.45, 0.12), 1.60, -1.500, 363),
         ('20190927', 3, 0.88, ['1539_12'], ufloat(3.78, 0.14), 1.60, -1.500, 360),
         ('20190927', 3, 0.88, ['1724_30'], ufloat(3.61, 0.14), 1.60, -1.500, 360),
         ('20190930', 3, 0.88, ['1044_07'], ufloat(3.82, 0.12), 1.60, -1.500, 360),
-        # ('20190930', 3, 0.88, ['1222_36'], ufloat(5.03, 0.31), 1.66, -1.70, 390),
-        # ('20190930', 3, 0.88, ['1336_16'], ufloat(4.74, 0.26), 1.66, -1.70, 390),
-        # ('20190930', 3, 0.88, ['1347_53'], ufloat(4.89, 0.24), 1.66, -1.70, 390),
+        # # ('20190930', 3, 0.88, ['1222_36'], ufloat(5.03, 0.31), 1.66, -1.70, 390),
+        # # ('20190930', 3, 0.88, ['1336_16'], ufloat(4.74, 0.26), 1.66, -1.70, 390),
+        # # ('20190930', 3, 0.88, ['1347_53'], ufloat(4.89, 0.24), 1.66, -1.70, 390),
         ('20190930', 3, 0.88, ['1758_48'], ufloat(4.07, 0.16), 1.62, -1.49, 361),
         ('20191001', 3, 0.88, ['1357_35'], ufloat(4.34, 0.18), 1.62, -1.52, 358),
-        # ('20191001', 3, 0.88, ['1923_32'], ufloat(5.66, 0.25), 1.76, -1.89, 397),
-        # ('20191002', 3, 0.88, ['1143_05'], ufloat(4.97, 0.25), 1.76, -1.89, 390),
-        # ('20191002', 3, 0.88, ['1559_18'], ufloat(5.10, 0.22), 1.76, -1.88, 391),
-        # ('20191003', 3, 0.88, ['1315_37'], ufloat(4.87, 0.19), 1.76, -1.88, 395),
-        # ('20191003', 3,	0.88, ['1711_27'], ufloat(4.83, 0.16), 1.76, -1.88,	395),
-        # ('20191004', 3,	0.88, ['1507_17'], ufloat(5.08, 0.18), 1.76, -1.86,	396),
-        # ('20191004', 3,	0.88, ['1845_50'], ufloat(5.19, 0.40), 1.62, -1.49,	360),
-        ('20191007', 3,	0.88, ['1227_10'], ufloat(4.11, 0.15), 1.62, -1.46,	354),
-        # ('20191027', 3,	0.88, ['1227_10'], ufloat(4.11, 0.15), 1.62, -1.46,	354), #fake date
+        # # ('20191001', 3, 0.88, ['1923_32'], ufloat(5.66, 0.25), 1.76, -1.89, 397),
+        # # ('20191002', 3, 0.88, ['1143_05'], ufloat(4.97, 0.25), 1.76, -1.89, 390),
+        # # ('20191002', 3, 0.88, ['1559_18'], ufloat(5.10, 0.22), 1.76, -1.88, 391),
+        # # ('20191003', 3, 0.88, ['1315_37'], ufloat(4.87, 0.19), 1.76, -1.88, 395),
+        # # ('20191003', 3,	0.88, ['1711_27'], ufloat(4.83, 0.16), 1.76, -1.88,	395),
+        # # ('20191004', 3,	0.88, ['1507_17'], ufloat(5.08, 0.18), 1.76, -1.86,	396),
+        # # ('20191004', 3,	0.88, ['1845_50'], ufloat(5.19, 0.40), 1.62, -1.49,	360),
+        # ('20191007', 3,	0.88, ['1227_10'], ufloat(4.11, 0.15), 1.62, -1.46,	354),
+        ('20191108', 3, 0.88, ['1357_35'], ufloat(5.0, 0.2), 1.62, -1.52, 360), #fake date
         ]
 
 
 temperature_calibration = 'android_new_lens'
-measurements_570 = [Measurement(date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature,temperature_calibration)
-                       for date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature in data_570]
-dataset_570 = Dataset(measurements_570)
-dataset_570.offset_hours = -1
-relative_days_570 = dataset_570.get_relative_times_day()
+measurements_556 = [Measurement(date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature,temperature_calibration)
+                       for date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature in data_556]
+dataset_556 = Dataset(measurements_556)
+dataset_556.offset_hours = -1
+relative_days_556 = dataset_556.get_relative_times_day()
 
-data_570_early = [ ('20190925', 3, 0.88, ['1622_39'], ufloat(3.00, 0.14), 1.58, -1.490, 363),
+data_556_early = [ ('20190925', 3, 0.88, ['1622_39'], ufloat(3.00, 0.14), 1.58, -1.490, 363),
         ('20190925', 3, 0.88, ['1910_01'], ufloat(3.01, 0.17), 1.58, -1.490, 363),
         ('20190926', 3, 0.88, ['1154_33'], ufloat(3.49, 0.13), 1.60, -1.500, 360),
         ('20190926', 3, 0.88, ['1731_57'], ufloat(3.45, 0.12), 1.60, -1.500, 363),
@@ -96,81 +105,81 @@ data_570_early = [ ('20190925', 3, 0.88, ['1622_39'], ufloat(3.00, 0.14), 1.58, 
         ('20190930', 3, 0.88, ['1758_48'], ufloat(4.07, 0.16), 1.62, -1.49, 361),
         ('20191001', 3, 0.88, ['1357_35'], ufloat(4.34, 0.18), 1.62, -1.52, 358),
 ]
-data_570_late = [
-          ('20191027', 3,	0.88, ['1227_10'], ufloat(4.11, 0.15), 1.62, -1.46,	354), #fake date
+data_556_late = [
+        ('20191108', 3, 0.88, ['1357_35'], ufloat(5.0, 0.2), 1.62, -1.52, 360), #fake date
 ]
 
-measurements_570_early = [Measurement(date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature,temperature_calibration)
-                       for date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature in data_570_early]
-dataset_570_early = Dataset(measurements_570_early)
-dataset_570_early.offset_hours = -1
-relative_days_570_early = dataset_570_early.get_relative_times_day()
+measurements_556_early = [Measurement(date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature,temperature_calibration)
+                       for date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature in data_556_early]
+dataset_556_early = Dataset(measurements_556_early)
+dataset_556_early.offset_hours = -1
+relative_days_556_early = dataset_556_early.get_relative_times_day()
 
-measurements_570_late = [Measurement(date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature,temperature_calibration)
-                       for date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature in data_570_late]
-dataset_570_late = Dataset(measurements_570_late)
-dataset_570_late.offset_hours = -1
-relative_days_570_late = [13.5]
+measurements_556_late = [Measurement(date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature,temperature_calibration)
+                       for date, electrode_number, trap_frequency, times_of_day, heatingrate, heater_current, fourwire_voltage, unscaled_temperature in data_556_late]
+dataset_556_late = Dataset(measurements_556_late)
+dataset_556_late.offset_hours = -1
+relative_days_556_late = [45]
 
 
 ####################################
 pyplot.figure()
 ax = pyplot.axes(xscale='linear',yscale='linear')
-pyplot.title('September 25, 570 K')
-# ax.errorbar(relative_days_570,
-#         dataset_570.heatingrates,
-#         yerr = dataset_570.heatingrate_errors,
+pyplot.title('September 25, 556 K')
+# ax.errorbar(relative_days_556,
+#         dataset_556.heatingrates,
+#         yerr = dataset_556.heatingrate_errors,
 #         fmt = '-o',)
-ax.errorbar(relative_days_570_early,
-        dataset_570_early.heatingrates,
-        yerr = dataset_570_early.heatingrate_errors,
+ax.errorbar(relative_days_556_early,
+        dataset_556_early.heatingrates,
+        yerr = dataset_556_early.heatingrate_errors,
         fmt = '-o',)
 
 
-heatingrate0_570, multiplier_570, k_570 = fit_noisegrowth(relative_days_570, dataset_570.heatingrates, dataset_570.heatingrate_errors)
+heatingrate0_556, multiplier_556, k_556 = fit_noisegrowth(relative_days_556, dataset_556.heatingrates, dataset_556.heatingrate_errors)
 
-print "heatingrate0_570: "+ str(heatingrate0_570)
-print "multiplier_570: "+ str(multiplier_570)
-print "k_570 (1/day):"+ str(k_570)
+print "heatingrate0_556: "+ str(heatingrate0_556)
+print "multiplier_556: "+ str(multiplier_556)
+print "k_556 (1/day):"+ str(k_556)
 
-times = np.linspace(0,15,1000)
-heatingrates = [noisegrowth_fitfunction(time, heatingrate0_570.nominal_value, multiplier_570.nominal_value, k_570.nominal_value) for time in times]
+times = np.linspace(-1,50,1000)
+heatingrates = [noisegrowth_fitfunction(time, heatingrate0_556.nominal_value, multiplier_556.nominal_value, k_556.nominal_value) for time in times]
 ax.plot(times,heatingrates)
 
-ax.errorbar(relative_days_570_late,
-        dataset_570_late.heatingrates,
-        yerr = dataset_570_late.heatingrate_errors,
+ax.errorbar(relative_days_556_late,
+        dataset_556_late.heatingrates,
+        yerr = dataset_556_late.heatingrate_errors,
         fmt = '-o',)
 
 
-pyplot.xlabel('Days at 570 K')
+pyplot.xlabel('Days at 556 K')
 pyplot.ylabel('Heating Rate(nbar/ms)')
 #################################
 
-dataset_570_avg = Dataset(measurements_570).bin_each_day()
-dataset_570_avg.offset_hours = -3
-relative_days_570_avg = dataset_570_avg.get_relative_times_day()
-temperature_average = sum(dataset_570_avg.temperatures)/len(dataset_570_avg.temperatures)
+dataset_556_avg = Dataset(measurements_556).bin_each_day()
+dataset_556_avg.offset_hours = -3
+relative_days_556_avg = dataset_556_avg.get_relative_times_day()
+temperature_average = sum(dataset_556_avg.temperatures)/len(dataset_556_avg.temperatures)
 
 pyplot.figure()
 ax = pyplot.axes(xscale='linear',yscale='linear')
-pyplot.title('Heat treatment post Mill 7')
-ax.errorbar(relative_days_570_avg,
-        dataset_570_avg.heatingrates,
-        yerr = dataset_570_avg.heatingrate_errors,
+pyplot.title('Heat treatment post Mill 10')
+ax.errorbar(relative_days_556_avg,
+        dataset_556_avg.heatingrates,
+        yerr = dataset_556_avg.heatingrate_errors,
         fmt = '-o',)
 
-heatingrate0_577, multiplier_577, k_577 = fit_noisegrowth(relative_days_570_avg, dataset_570_avg.heatingrates, dataset_570_avg.heatingrate_errors)
+heatingrate0_577, multiplier_577, k_577 = fit_noisegrowth(relative_days_556_avg, dataset_556_avg.heatingrates, dataset_556_avg.heatingrate_errors)
 
-print "heatingrate0_570 averaged: "+ str(heatingrate0_570)
-print "multiplier_570 averaged: "+ str(multiplier_570)
-print "k_570 averaged: "+ str(k_570)
+print "heatingrate0_556 averaged: "+ str(heatingrate0_556)
+print "multiplier_556 averaged: "+ str(multiplier_556)
+print "k_556 averaged: "+ str(k_556)
 print "average temperature:"+ str(temperature_average)
 
-times = np.linspace(0,35,1000)
-heatingrates = [noisegrowth_fitfunction(time, heatingrate0_570.nominal_value, multiplier_570.nominal_value, k_570.nominal_value) for time in times]
+times = np.linspace(-1,50,1000)
+heatingrates = [noisegrowth_fitfunction(time, heatingrate0_556.nominal_value, multiplier_556.nominal_value, k_556.nominal_value) for time in times]
 ax.plot(times,heatingrates)
-pyplot.xlabel('Days at 570 K')
+pyplot.xlabel('Days at 556 K')
 pyplot.ylabel('Heating Rate(nbar/ms)')
 
 
@@ -260,7 +269,7 @@ pyplot.ylabel('Heating Rate(nbar/ms)')
 ##### Based on actual fits:
 R = 8.3145 * ureg.J / (ureg.mol * ureg.K)
 k1=.50 * 1/ ureg.day
-T1 = 570.0 * ureg.K
+T1 = 556.0 * ureg.K
 
 k2=.56 * 1/ureg.day
 T2 = 577.0 * ureg.K
@@ -272,8 +281,8 @@ print 'from fit, reaction energy E = ' + str(E.to('kJ/mol'))
 print '44 kJ/mol ~ 0.5 eV'
 
 R = 8.3145 * ureg.J / (ureg.mol * ureg.K)
-k1=ufloat(.50,.16) #* 1/ ureg.day
-T1 = ufloat(556.0,4.0) #* ureg.K
+k1=ufloat(.141,.032) #* 1/ ureg.day
+T1 = ufloat(556.0,2.0) #* ureg.K
 half_life_1 = np.log(2)/k1
 
 k2=ufloat(.56,.22) #* 1/ureg.day
