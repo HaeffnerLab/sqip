@@ -29,9 +29,9 @@ def get_ion_crosssection(M1,Z1,M2,Z2,Energy):
 
 
 S_n_Carbon = get_ion_crosssection(M1_Ar,Z1_Ar,M2_C,Z2_C,Energy)
-print "400 eV Argon ion, Carbon stopping cross section = " + str(S_n_Carbon) + " cm^2"
+print("400 eV Argon ion, Carbon stopping cross section = " + str(S_n_Carbon) + " cm^2")
 S_n_Aluminum = get_ion_crosssection(M1_Ar,Z1_Ar,M2_Al,Z2_Al,Energy)
-print "400 eV Argon ion, Aluminum stopping cross section = " + str(S_n_Aluminum) + " cm^2"
+print("400 eV Argon ion, Aluminum stopping cross section = " + str(S_n_Aluminum) + " cm^2")
 
 
 ######################
@@ -54,7 +54,7 @@ def crosssection(energy, stoppingpower,atomicmass):
     return crosssection
 
 crosssection_C = crosssection(energy_electron,stoppingpower_C_amorphous,mass_C)
-print "2 keV electron, Carbon stopping cross section = " + str(crosssection_C) + " cm^2"
+print("2 keV electron, Carbon stopping cross section = " + str(crosssection_C) + " cm^2")
 crosssection_Al = crosssection(energy_electron,stoppingpower_C_amorphous,mass_C)
-print "2 keV electron, Aluminum stopping cross section = " + str(crosssection_Al) + " cm^2"
+print("2 keV electron, Aluminum stopping cross section = " + str(crosssection_Al) + " cm^2")
 

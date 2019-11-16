@@ -1,5 +1,4 @@
 import numpy as np
-from copy import deepcopy
 from _Measurement import Measurement
 from functions_fitting import fit_second_order_polynomial
 

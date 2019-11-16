@@ -138,9 +138,9 @@ ax.errorbar(relative_days_556_early,
 
 heatingrate0_556, multiplier_556, k_556 = fit_noisegrowth(relative_days_556, dataset_556.heatingrates, dataset_556.heatingrate_errors)
 
-print "heatingrate0_556: "+ str(heatingrate0_556)
-print "multiplier_556: "+ str(multiplier_556)
-print "k_556 (1/day):"+ str(k_556)
+print("heatingrate0_556: "+ str(heatingrate0_556))
+print("multiplier_556: "+ str(multiplier_556))
+print("k_556 (1/day):"+ str(k_556))
 
 times = np.linspace(-1,50,1000)
 heatingrates = [noisegrowth_fitfunction(time, heatingrate0_556.nominal_value, multiplier_556.nominal_value, k_556.nominal_value) for time in times]
@@ -171,10 +171,10 @@ ax.errorbar(relative_days_556_avg,
 
 heatingrate0_577, multiplier_577, k_577 = fit_noisegrowth(relative_days_556_avg, dataset_556_avg.heatingrates, dataset_556_avg.heatingrate_errors)
 
-print "heatingrate0_556 averaged: "+ str(heatingrate0_556)
-print "multiplier_556 averaged: "+ str(multiplier_556)
-print "k_556 averaged: "+ str(k_556)
-print "average temperature:"+ str(temperature_average)
+print("heatingrate0_556 averaged: "+ str(heatingrate0_556))
+print("multiplier_556 averaged: "+ str(multiplier_556))
+print("k_556 averaged: "+ str(k_556))
+print("average temperature:"+ str(temperature_average))
 
 times = np.linspace(-1,50,1000)
 heatingrates = [noisegrowth_fitfunction(time, heatingrate0_556.nominal_value, multiplier_556.nominal_value, k_556.nominal_value) for time in times]
@@ -227,9 +227,9 @@ ax.errorbar(relative_days_577,
 
 heatingrate0_577, multiplier_577, k_577 = fit_noisegrowth(relative_days_577, dataset_577.heatingrates, dataset_577.heatingrate_errors)
 
-print "heatingrate0_577: "+ str(heatingrate0_577)
-print "multiplier_577: "+ str(multiplier_577)
-print "k_577: "+ str(k_577)
+print("heatingrate0_577: "+ str(heatingrate0_577))
+print("multiplier_577: "+ str(multiplier_577))
+print("k_577: "+ str(k_577))
 
 times = np.linspace(0,15,1000)
 heatingrates = [noisegrowth_fitfunction(time, heatingrate0_577.nominal_value, multiplier_577.nominal_value, k_577.nominal_value) for time in times]
@@ -253,10 +253,10 @@ ax.errorbar(relative_days_577_avg,
 
 heatingrate0_577, multiplier_577, k_577 = fit_noisegrowth(relative_days_577_avg, dataset_577_avg.heatingrates, dataset_577_avg.heatingrate_errors)
 
-print "heatingrate0_577 averaged: "+ str(heatingrate0_577)
-print "multiplier_577 averaged: "+ str(multiplier_577)
-print "k_577 averaged: "+ str(k_577)
-print "average temperature:"+ str(temperature_average)
+print("heatingrate0_577 averaged: "+ str(heatingrate0_577))
+print("multiplier_577 averaged: "+ str(multiplier_577))
+print("k_577 averaged: "+ str(k_577))
+print("average temperature:"+ str(temperature_average))
 
 times = np.linspace(0,15,1000)
 heatingrates = [noisegrowth_fitfunction(time, heatingrate0_577.nominal_value, multiplier_577.nominal_value, k_577.nominal_value) for time in times]
@@ -277,8 +277,8 @@ T2 = 577.0 * ureg.K
 E = np.log((k1/k2)) * R / (-1/T1 + 1/T2)
 
 
-print 'from fit, reaction energy E = ' + str(E.to('kJ/mol'))
-print '44 kJ/mol ~ 0.5 eV'
+print('from fit, reaction energy E = ' + str(E.to('kJ/mol')))
+print('44 kJ/mol ~ 0.5 eV')
 
 R = 8.3145 * ureg.J / (ureg.mol * ureg.K)
 k1=ufloat(.141,.032) #* 1/ ureg.day
@@ -289,12 +289,12 @@ k2=ufloat(.56,.22) #* 1/ureg.day
 T2 = ufloat(577.0,2.0) #* ureg.K
 half_life_2 = np.log(2)/k2
 
-print "half life 556 K: " + str(half_life_1)
-print "half life 577 K: " + str(half_life_2)
+print("half life 556 K: " + str(half_life_1))
+print("half life 577 K: " + str(half_life_2))
 
 E = umath.log((k1/k2)) * 8.3145 / (-1/T1 + 1/T2) /1000
 
-print 'from fit, reaction energy E (kJ/mol)= ' + str(E)
+print('from fit, reaction energy E (kJ/mol)= ' + str(E))
 
 
 

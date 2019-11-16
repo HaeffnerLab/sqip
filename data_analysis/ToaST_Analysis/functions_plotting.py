@@ -135,8 +135,8 @@ def plot_added_dose(temperature_scalings):
     #print % and absolute changes in heating rates
 
     for i in range(1,len(lines)):
-        print treatments[i] + ' :' + labelsmaybe[i]+ ' :'
-        print str((heatingrates_295K[i]-heatingrates_295K[i-1])/(heatingrates_295K[i])*100) + '%'
+        print(treatments[i] + ' :' + labelsmaybe[i]+ ' :')
+        print(str((heatingrates_295K[i]-heatingrates_295K[i-1])/(heatingrates_295K[i])*100) + '%')
 
 
     # plot lines between points

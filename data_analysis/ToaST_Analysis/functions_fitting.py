@@ -46,7 +46,7 @@ def fit_exponential(frequencies, heatingrates, heatingrate_errors):
     amplitude = ufloat(popt[0], perr[0])
     exponent = ufloat(popt[1], perr[1])
 
-    print "Amplitude: " + str(amplitude)
-    print "Alpha: "+ str(exponent-1)
+    print("Amplitude: " + str(amplitude))
+    print("Alpha: "+ str(exponent-1))
 
     return amplitude, exponent
