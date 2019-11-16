@@ -1,7 +1,7 @@
-from _Dataset import *
 from _Dataset import Dataset
 from functions_import_data import *
-
+from _TemperatureScaling import TemperatureScaling
+from _FrequencyScaling import FrequencyScaling
 
 ## This dictionary contains immutable properties of the dataset:
 ##      file name, import function, and temperature calibration
@@ -82,6 +82,16 @@ dataset_factory_dictionary = {
     				'mill', 94.2, 253.86) #this really isn't a reasonable set of data
 }
 
+def data_to_dataset(dictionary_key,
+                            plot_label = None,
+                            color = 'black'):
+    if not plot_label:
+        plot_label = dictionary_key
+    if plot_label == 'do_not_label':
+        plot_label = None
+    measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = dataset_factory_dictionary[dictionary_key]
+    dataset = Dataset(measurements, color, plot_label, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom)
+    return dataset
 
 def data_to_temperature_scaling(dictionary_key,
                             get_frequency = None,
@@ -101,25 +111,43 @@ def data_to_temperature_scaling(dictionary_key,
     measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = dataset_factory_dictionary[dictionary_key]
     dataset = Dataset(measurements, color, marker, line, plot_label, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom, smooth=smooth)
     if get_frequency and not scale_to_frequency:
-        temperature_scaling = dataset.get_single_frequency(get_frequency)
+        temperature_scaling = TemperatureScaling(dataset.get_single_frequency(get_frequency), get_frequency, dataset)
     if get_frequency and scale_to_frequency:
-        temperature_scaling = dataset.get_single_frequency(get_frequency)
+        temperature_scaling = TemperatureScaling(dataset.get_single_frequency(get_frequency), get_frequency, dataset)
         temperature_scaling.measurements = [measurement.scale_to_frequency(scale_to_frequency) for measurement in temperature_scaling.measurements]
     if scale_to_frequency and not get_frequency:
-        dataset.measurements = [measurement.scale_to_frequency(scale_to_frequency) for measurement in dataset.measurements]
-        temperature_scaling = dataset.get_single_frequency(scale_to_frequency)
+        measurements = [measurement.scale_to_frequency(scale_to_frequency) for measurement in dataset.measurements]
+        temperature_scaling = TemperatureScaling(measurements, scale_to_frequency, dataset)
     return temperature_scaling.get_temperature_subset(temp_min, temp_max).bin_similar_temperatures(temperature_bin)
 
-def data_to_dataset(dictionary_key,
-                            plot_label = None,
-                            color = 'black'):
-    if not plot_label:
-        plot_label = dictionary_key
-    if plot_label == 'do_not_label':
-        plot_label = None
-    measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = dataset_factory_dictionary[dictionary_key]
-    dataset = Dataset(measurements, color, plot_label, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom)
-    return dataset
+# def data_to_frequency_scaling(dictionary_key,
+#                             get_frequency = None,
+#                             scale_to_frequency = None,
+#                             plot_label = None,
+#                             color = 'black',
+#                             marker = 'x',
+#                             line = '-',
+#                             temp_min = 0,
+#                             temp_max = 800,
+#                             temperature_bin = 1,
+#                             smooth = True):
+#     if not plot_label:
+#         plot_label = dictionary_key
+#     if plot_label == 'do_not_label':
+#         plot_label = None
+#     measurements, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom = dataset_factory_dictionary[dictionary_key]
+#     dataset = Dataset(measurements, color, marker, line, plot_label, last_treatment, added_dose_per_surface_atom, cumulative_dose_per_surface_atom, smooth=smooth)
+#     if get_frequency and not scale_to_frequency:
+#         temperature_scaling = TemperatureScaling(dataset.get_single_frequency(get_frequency), get_frequency, dataset)
+#     if get_frequency and scale_to_frequency:
+#         temperature_scaling = TemperatureScaling(dataset.get_single_frequency(get_frequency), get_frequency, dataset)
+#         temperature_scaling.measurements = [measurement.scale_to_frequency(scale_to_frequency) for measurement in temperature_scaling.measurements]
+#     if scale_to_frequency and not get_frequency:
+#         dataset.measurements = [measurement.scale_to_frequency(scale_to_frequency) for measurement in dataset.measurements]
+#         temperature_scaling = dataset.get_single_frequency(scale_to_frequency)
+#     return temperature_scaling.get_temperature_subset(temp_min, temp_max).bin_similar_temperatures(temperature_bin)
+#
+#
 
 
 def heat_treatment_mill7(color = 'black', label = 'mill7'):

@@ -1,13 +1,12 @@
 import numpy as np
 from matplotlib import pyplot
 
-from functions_fitting import fit_freq_scaling, exponential_fit
+from functions_fitting import fit_exponential, exponential
 
 
 def plot_freq_scaling(ax,filename,skiprows,label,mycolor,fmt='o',dotsize=3):
     #TODO rewrite this
         mydata = np.loadtxt(filename,skiprows=skiprows)
-        date = np.array(mydata[:,0])
         freq = np.array(mydata[:,1])
         rate = np.array(mydata[:,2])
         error = np.array(mydata[:,3])
@@ -17,15 +16,30 @@ def plot_freq_scaling(ax,filename,skiprows,label,mycolor,fmt='o',dotsize=3):
         rate = rate[inds]
         error = error[inds]
 
-        amp, amp_err, alpha, alpha_err = fit_freq_scaling(freq, rate, error, label=label)
+        amplitude, exponent = fit_exponential(freq, rate, error)
+
         ax.errorbar(freq,rate,yerr=error,color=mycolor,fmt=fmt,label=label,capsize=3)
 
         x = np.linspace(.47, 2, num=300)
-        rate_fit = exponential_fit(x, amp, alpha)
+        rate_fit = exponential(x, amplitude.nominal_value, exponent.nominal_value)
         ax.plot(x,rate_fit,color = 'black')
 
-        # ax.tick_params(labelsize=14,which='both')
         return
+
+def plot_alpha_versus_temperature(alphas, temperatures):
+    #TODO fill in
+    return
+
+def plot_frequency_scaling(frequency_scaling):
+    ax = pyplot.axes(xscale='log', yscale='log')
+
+    pyplot.xlabel('Frequency (MHz)')
+    pyplot.ylabel('nbar/ms')
+
+    ax.errorbar(frequency_scaling.frequencies, frequency_scaling.heatingrates, yerr=frequency_scaling.heatingrate_errors, fmt=frequency_scaling.marker, label=frequency_scaling.label, color=frequency_scaling.color)
+    ax.plot(frequency_scaling.frequencies_smooth,  frequency_scaling.heatingrates_smooth, linestyle = frequency_scaling.line, color=frequency_scaling.color)
+
+    return ax
 
 
 def plot_temperature_scaling(temperature_scaling, plot_data = True, plot_smooth = False):
@@ -33,14 +47,13 @@ def plot_temperature_scaling(temperature_scaling, plot_data = True, plot_smooth 
 
     pyplot.xlabel('Temperature (K)')
     pyplot.ylabel('nbar/ms')
-    # pyplot.title('Heating rates as a function of temperature')
 
     if plot_data:
         ax.errorbar(temperature_scaling.temperatures, temperature_scaling.heatingrates, yerr=temperature_scaling.heatingrate_errors, fmt=temperature_scaling.marker, label=temperature_scaling.label, color=temperature_scaling.color)
-        # ax.errorbar(temperature_scaling.temperatures, temperature_scaling.heatingrates, yerr=temperature_scaling.heatingrate_errors, fmt='o', label=temperature_scaling.label, color=temperature_scaling.color)
 
     if plot_smooth:
         ax.plot(temperature_scaling.temperatures_smooth,  temperature_scaling.heatingrates_smooth, linestyle = temperature_scaling.line, color=temperature_scaling.color)
+
     return ax
 
 

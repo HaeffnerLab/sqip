@@ -1,5 +1,6 @@
 from dataset_factory import *
 from functions_plotting import plot_cumulative_dose, plot_added_dose
+from matplotlib import pyplot
 
 ## electron bombardment: marker = "d", line = ':'
 ## heat: marker = 'x', line = '-'

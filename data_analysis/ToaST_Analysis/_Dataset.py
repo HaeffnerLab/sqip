@@ -1,5 +1,7 @@
-from _TemperatureScaling import *
-from functions_fitting import second_order_polynomial
+import numpy as np
+from copy import deepcopy
+from _Measurement import Measurement
+from functions_fitting import fit_second_order_polynomial
 
 
 class Dataset:
@@ -9,7 +11,7 @@ class Dataset:
         # test
         self.measurements = measurements
         # self.smoothing_function = univariate_spline
-        self.smoothing_function = second_order_polynomial
+        self.smoothing_function = fit_second_order_polynomial
         # self.smoothing_function = third_order_polynomial
         self.color = color
         self.label = label
@@ -38,7 +40,16 @@ class Dataset:
             if frequency - bin_size/2 <= measurement.trap_frequency <= frequency + bin_size/2:
                 scaled_data = measurement.scale_to_frequency(frequency)
                 single_frequency_data.append(scaled_data)
-        return TemperatureScaling(single_frequency_data, frequency, self)
+        return single_frequency_data
+
+
+    def get_single_temperature(self, temperature, bin_size = 2):
+        single_temperature_data = []
+        for measurement in self.measurements:
+            if temperature - bin_size/2 <= measurement.temperature <= temperature + bin_size/2:
+                single_temperature_data.append(measurement)
+        return single_temperature_data
+
 
     def get_relative_times_day(self):
         measurement_end_times_hrs = [times[-1] for times in self.times_in_hours]
@@ -50,7 +61,6 @@ class Dataset:
         return relative_times_day
 
     def bin_each_day(self):
-        #TODO make sure added properties aren't deleted deepcopy
         data_averaged = [] # list of heating rate objects
         measurement_days = []
         for day in self.dates:
@@ -65,17 +75,10 @@ class Dataset:
                 # add new heating rate object to new data list
                 averaged_measurement = average_data(data_to_average)
                 data_averaged.append(averaged_measurement)
-
         binned_dataset = Dataset(data_averaged, color=self.color, label=self.label, last_treatment=self.last_treatment, added_dose=self.added_dose, cumulative_dose=self.cumulative_dose)
+
         return binned_dataset
 
-    def extract_all_temperature_scalings(self):
-        #TODO fill in this function
-        return
-
-    def extract_all_frequency_scalings(self):
-        #TODO fill in this function
-        return
 
 def get_measured_frequencies(measurements):
     measured_frequencies = set([measurement.trap_frequency for measurement in measurements])
@@ -89,3 +92,29 @@ def get_linetype(last_treatment):
 	}
     return linetype.get(last_treatment)
 
+
+def average_data(measurements):
+    heatingrates = [measurement.heatingrate for measurement in measurements]
+    heatingrate_errors = [measurement.heatingrate_error for measurement in measurements]
+    temperatures = [measurement.temperature for measurement in measurements]
+    frequencies = [measurement.trap_frequency for measurement in measurements]
+
+    weights = [error**-2 for error in heatingrate_errors]
+
+    heatingrate_average = np.sum(np.multiply(heatingrates,weights))/np.sum(weights)
+    heatingrate_error_average = np.sqrt(1/np.sum(weights))
+    temperature_average = np.sum(np.multiply(temperatures,weights))/np.sum(weights)
+    frequency_average = np.sum(np.multiply(frequencies,weights))/np.sum(weights)
+
+    data_averaged = Measurement()
+    data_averaged.heatingrate = heatingrate_average
+    data_averaged.heatingrate_error = heatingrate_error_average
+    data_averaged.temperature = temperature_average
+    data_averaged.trap_frequency = frequency_average
+
+    if measurements[0].times_in_hours:
+        times = [measurement.times_in_hours[-1] for measurement in measurements]
+        time_average = np.sum(np.multiply(times,weights))/np.sum(weights)
+        data_averaged.times_in_hours = [time_average]
+
+    return data_averaged

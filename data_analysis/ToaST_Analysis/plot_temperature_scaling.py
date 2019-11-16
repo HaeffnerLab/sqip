@@ -1,5 +1,6 @@
 from dataset_factory import *
 from functions_plotting import plot_temperature_scaling
+from matplotlib import pyplot
 
 ## electron bombardment: marker = "d", line = ':'
 ## heat: marker = 'x', line = '-'

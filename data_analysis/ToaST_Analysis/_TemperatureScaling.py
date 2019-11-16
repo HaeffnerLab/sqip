@@ -1,6 +1,5 @@
+from _Dataset import *
 from _Measurement import *
-from _Dataset import get_linetype
-
 
 class TemperatureScaling:
 
@@ -18,7 +17,6 @@ class TemperatureScaling:
             self.label = dataset.label
         else:
             self.label = None
-        self.linetype = get_linetype(dataset.last_treatment)
 
         self.heatingrates = [measurement.heatingrate for measurement in measurements]
         self.heatingrate_errors = [measurement.heatingrate_error for measurement in measurements]
@@ -28,31 +26,13 @@ class TemperatureScaling:
         if self.temperatures and self.dataset.smooth == True:
             self.temperatures_smooth, self.heatingrates_smooth = dataset.smoothing_function(self.temperatures, self.heatingrates, self.heatingrate_errors)
 
-        # TODO
-        # #collect data from tempscaling files, convert to temperature, calculate TAF dist, smooth, calc alpha prediction
-        # self.Vb,self.d_ebar = calc_dist(self.temperature,self.rate,self.rateerror,self.trapfreq)
-        # self.Vb_smooth, self.d_ebar_smooth = calc_dist(self.T_smooth,self.rates_smooth,self.rates_smooth*0,self.trapfreq)
-        #
-        # # myfiterr = 0
-        # self.smoothT_predict,self.smoothalpha_predict = direct_alpha(self.T_smooth,self.rates_smooth,self.trapfreq) # This is the alpha prediction from the smoothed slope
-        # self.roughT_predict,self.roughalpha_predict = direct_alpha(self.temperature,self.rate,self.trapfreq)  # This is the alpha prediction from the raw slope
-        #
 
     def get_rate_at_nearest_temperature(self, temperature):
         index = np.argmin(np.abs(self.temperatures_smooth - temperature))
         return self.heatingrates_smooth[index]
 
-    def scale_temperature_scaling_to_frequency(self, new_frequency):
-        #TODO make sure added characteristics aren't deleted
-        scaled_data = []
-        for measurement in self.measurements:
-            scaled_data.append(measurement.scale_to_frequency(new_frequency, alpha = 1))
-
-        scaled_temperature_scaling = TemperatureScaling(scaled_data, self.trap_frequency, self.dataset)
-        return scaled_temperature_scaling
 
     def bin_similar_temperatures(self, temperature_bin_size):
-        #TODO make sure added properties aren't deleted deepcopy
         if not self.measurements:
             return self
         data_averaged = [] # list of heating rate objects
@@ -72,7 +52,9 @@ class TemperatureScaling:
                 data_averaged.append(new_data)
 
         binned_temperature_scaling = TemperatureScaling(data_averaged, self.trap_frequency, self.dataset)
+
         return binned_temperature_scaling
+
 
     def get_temperature_subset(self, temp_min, temp_max):
         #TODO make sure added properties aren't deleted using deepcopy(object)
@@ -80,6 +62,7 @@ class TemperatureScaling:
                        if temp_min <= measurement.temperature <= temp_max]
         temperature_scaling_subset = TemperatureScaling(measurement_subset, self.trap_frequency, self.dataset)
         return temperature_scaling_subset
+
 
 def make_bins(list, bin_size):
     bins = [(290, 304)] # first bin is always room temperature
@@ -90,28 +73,7 @@ def make_bins(list, bin_size):
         bottom_of_bin = top_of_bin
     return bins
 
-def average_data(measurements):
-    heatingrates = [measurement.heatingrate for measurement in measurements]
-    heatingrate_errors = [measurement.heatingrate_error for measurement in measurements]
-    temperatures = [measurement.temperature for measurement in measurements]
 
-    weights = [error**-2 for error in heatingrate_errors]
-
-    heatingrate_average = np.sum(np.multiply(heatingrates,weights))/np.sum(weights)
-    heatingrate_error_average = np.sqrt(1/np.sum(weights)) 
-    temperature_average = np.sum(np.multiply(temperatures,weights))/np.sum(weights)
-
-    data_averaged = Measurement()
-    data_averaged.heatingrate = heatingrate_average
-    data_averaged.heatingrate_error = heatingrate_error_average
-    data_averaged.temperature = temperature_average
-    data_averaged.trap_frequency = measurements[0].trap_frequency
-
-    if measurements[0].times_in_hours:
-        times = [measurement.times_in_hours[-1] for measurement in measurements]
-        time_average = np.sum(np.multiply(times,weights))/np.sum(weights)
-        data_averaged.times_in_hours = [time_average]
-
-    return data_averaged
-
-
+def extract_all_temperature_scalings(Dataset):
+    #TODO: fill in
+    return

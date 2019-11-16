@@ -16,8 +16,12 @@ class FrequencyScaling:
         self.alpha = self.calculate_alpha()
 
     def get_frequency_subset(self, freq_min, freq_max):
-        #TODO: write this
+        #TODO: fill in
         return
 
     def calculate_alpha(self):
         return
+
+def extract_all_frequency_scalings(Dataset):
+    #TODO: fill in
+    return
