@@ -2,9 +2,8 @@ from datetime import timedelta
 from datetime import datetime
 from time import mktime
 import numpy as np
-from _Measurement import *
 from matplotlib import pyplot
-
+from copy import deepcopy
 
 class ContaminationMeasurementMultiTrapComparison():
 

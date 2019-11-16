@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
-import auger_functions as ft
+import Auger.auger_functions as ft
 
 ### Plot various elements as a function of milling dose, and plot % increase in heating rates as a function of milling dose ###
 

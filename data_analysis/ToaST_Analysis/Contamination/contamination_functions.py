@@ -88,10 +88,10 @@ def fit_freq_scaling(freq, rate, rerr,label='',p=1): #removed ax input
         alpha = popt[1]
 
         if p==1:
-            print label + ':'
-            print "Amplitude: "+"{0:.2f}".format(Amp) + ' +- ' + "{0:.2f}".format(perr[0])
+            print(label + ':')
+            print("Amplitude: "+"{0:.2f}".format(Amp) + ' +- ' + "{0:.2f}".format(perr[0]))
 #           print "exponent: "+"{0:.2f}".format(alpha) + ' +- ' + "{0:.2f}".format(perr[1])
-            print "exponent: "+"{0:.2f}".format(alpha) + ' +- ' + "{0:.2f}".format(perr[1])
+            print("exponent: "+"{0:.2f}".format(alpha) + ' +- ' + "{0:.2f}".format(perr[1]))
 
             freq = np.sort(freq)
             ratefit = [f(x,Amp,alpha) for x in freq]

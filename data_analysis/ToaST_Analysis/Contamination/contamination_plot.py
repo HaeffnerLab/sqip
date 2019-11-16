@@ -1,7 +1,7 @@
 from matplotlib import pyplot
 import numpy as np
-from contamination_functions import *
-from contamination_factory import *
+from Contamination.contamination_functions import *
+from Contamination.contamination_factory import *
 
 #TODO: rewrite everything with objects, check for errors
 
@@ -54,8 +54,8 @@ for set in datasets_auger:
     label = set[0]
     days = set[2]
     alphas, data1p3, datap88, days_to_plot = process_rates_contamination(alldata,days)
-    rates = map(lambda x: x.nominal_value, datap88)
-    rateerr = map(lambda x: x.std_dev, datap88)
+    rates = [rate.nominal_value for rate in datap88]
+    rateerr = [rate.std_dev for rate in datap88]
     if rates:
         color = getcolor(rates[0],rates[1])
         ax.errorbar(days_to_plot,rates,yerr=rateerr,fmt='-o',capsize=3,label=label,color=color)
@@ -71,8 +71,8 @@ for set in datasets_auger:
     label = set[0]
     days = set[2]
     alphas, data1p3, datap88, days_to_plot = process_rates_contamination(alldata,days)
-    rates = map(lambda x: x.nominal_value, data1p3)
-    rateerr = map(lambda x: x.std_dev, data1p3)
+    rates =[rate.nominal_value for rate in data1p3]
+    rateerr = [rate.std_dev for rate in data1p3]
     if rates:
         color = getcolor(rates[0],rates[1])
         ax.errorbar(days_to_plot,rates,yerr=rateerr,fmt='-o',capsize=3,label=label,color=color)
@@ -88,8 +88,8 @@ for set in datasets_auger:
     label = set[0]
     days = set[2]
     alphas, data1p3, datap88, days_to_plot = process_rates_contamination(alldata,days)
-    alpha = map(lambda x: x.nominal_value, alphas)
-    alpha_err = map(lambda x: x.std_dev, alphas)
+    alpha = [alpha.nominal_value for alpha in alphas]
+    alpha_err = [alpha.std_dev for alpha in alphas]
     if alpha:
         color = getcolor(alpha[0],alpha[1])
         ax.errorbar(days_to_plot,alpha,yerr=alpha_err,fmt='-o',capsize=3,label=label,color=color)
@@ -235,8 +235,8 @@ for set in datasets_mill:
         freqs = [0.88000, 1.3000]
         alpha, amp = calc_single_alpha(rates,rateerrs,freqs) # alpha is type ufloat
 
-        print "alpha"
-        print alpha-1
+        print("alpha")
+        print(alpha-1)
 
 #         datap88.append(heatingrate_p88)
 #         data1p3.append(heatingrate_1p3)

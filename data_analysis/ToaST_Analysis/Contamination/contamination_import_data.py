@@ -1,5 +1,6 @@
 import csv
-from ContaminationMeasurementMultiTrapComparison import *
+from Contamination.ContaminationMeasurementMultiTrapComparison import ContaminationMeasurementMultiTrapComparison
+from uncertainties import ufloat
 
 def format_multi_trap_comparison(line):
     ## Measurement_Multi_Trap_Comparison object takes "raw_data" is a list of the form:

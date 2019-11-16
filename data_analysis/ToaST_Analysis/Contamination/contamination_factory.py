@@ -1,5 +1,5 @@
-from contamination_import_data import *
-
+from Contamination.contamination_import_data import *
+from Contamination.ContaminationMeasurementMultiTrapComparison import *
 
 data_root_location = '/Users/Maya/Dropbox/Data_and_Plotting_SQIP/Data/'
 

@@ -37,7 +37,7 @@ def find_peaks(energy,readout):
 
 def import_data(filename,nstart=260,nend=280,basecorrect=1):
     ##generates data,corrects for polynomial baseline
-    print filename
+    print(filename)
     data = np.genfromtxt(filename,skip_header=4,skip_footer=1)
     energy = data[:,0]
     readout = data[:,1]*1000.
