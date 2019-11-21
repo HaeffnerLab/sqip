@@ -156,7 +156,7 @@ pyplot.xlabel('Days at 556 K')
 pyplot.ylabel('Heating Rate(nbar/ms)')
 #################################
 
-dataset_556_avg = Dataset(measurements_556).bin_each_day()
+dataset_556_avg = Dataset(measurements_556).bin_by_day()
 dataset_556_avg.offset_hours = -3
 relative_days_556_avg = dataset_556_avg.get_relative_times_day()
 temperature_average = sum(dataset_556_avg.temperatures)/len(dataset_556_avg.temperatures)
@@ -238,7 +238,7 @@ pyplot.xlabel('Days at 577 K')
 pyplot.ylabel('Heating Rate(nbar/ms)')
 
 ######################
-dataset_577_avg = Dataset(measurements_577).bin_each_day()
+dataset_577_avg = Dataset(measurements_577).bin_by_day()
 dataset_577_avg.offset_hours = -3
 relative_days_577_avg = dataset_577_avg.get_relative_times_day()
 temperature_average = sum(dataset_577_avg.temperatures)/len(dataset_577_avg.temperatures)

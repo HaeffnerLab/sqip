@@ -1,43 +1,34 @@
-import numpy as np
 from matplotlib import pyplot
 
-from functions_fitting import fit_exponential, exponential
+
+def plot_alpha_versus_temperature(frequency_scalings):
+    ax = pyplot.axes(xscale='linear', yscale='linear')
+
+    pyplot.xlabel('Temperature (K)')
+    pyplot.ylabel('alpha')
+    color = frequency_scalings[0].dataset.color
+
+    alphas = [frequency_scaling.get_alpha().nominal_value for frequency_scaling in frequency_scalings]
+    alpha_errors = [frequency_scaling.get_alpha().std_dev for frequency_scaling in frequency_scalings]
+    temperatures = [frequency_scaling.temperature for frequency_scaling in frequency_scalings]
+
+    ax.errorbar(temperatures, alphas, yerr=alpha_errors, fmt='.', color=color)
+
+    return ax
 
 
-def plot_freq_scaling(ax,filename,skiprows,label,mycolor,fmt='o',dotsize=3):
-    #TODO rewrite this
-        mydata = np.loadtxt(filename,skiprows=skiprows)
-        freq = np.array(mydata[:,1])
-        rate = np.array(mydata[:,2])
-        error = np.array(mydata[:,3])
-
-        inds = np.argsort(freq)
-        freq = freq[inds]
-        rate = rate[inds]
-        error = error[inds]
-
-        amplitude, exponent = fit_exponential(freq, rate, error)
-
-        ax.errorbar(freq,rate,yerr=error,color=mycolor,fmt=fmt,label=label,capsize=3)
-
-        x = np.linspace(.47, 2, num=300)
-        rate_fit = exponential(x, amplitude.nominal_value, exponent.nominal_value)
-        ax.plot(x,rate_fit,color = 'black')
-
-        return
-
-def plot_alpha_versus_temperature(alphas, temperatures):
-    #TODO fill in
-    return
-
-def plot_frequency_scaling(frequency_scaling):
+def plot_frequency_scaling(frequency_scaling, plot_fit = False):
     ax = pyplot.axes(xscale='log', yscale='log')
 
     pyplot.xlabel('Frequency (MHz)')
     pyplot.ylabel('nbar/ms')
 
+
+
     ax.errorbar(frequency_scaling.frequencies, frequency_scaling.heatingrates, yerr=frequency_scaling.heatingrate_errors, fmt=frequency_scaling.marker, label=frequency_scaling.label, color=frequency_scaling.color)
-    ax.plot(frequency_scaling.frequencies_smooth,  frequency_scaling.heatingrates_smooth, linestyle = frequency_scaling.line, color=frequency_scaling.color)
+
+    if plot_fit:
+        ax.plot(frequency_scaling.get_frequencies_fit(),  frequency_scaling.get_heatingrates_fit(), linestyle = frequency_scaling.line, color=frequency_scaling.color)
 
     return ax
 

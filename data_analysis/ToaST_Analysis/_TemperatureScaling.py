@@ -1,13 +1,13 @@
-from _Dataset import *
-from _Measurement import *
+from _Dataset import average_data, make_bins
+import numpy as np
 
 class TemperatureScaling:
 
-    def __init__(self, measurements, trap_frequency, dataset):
+    def __init__(self, measurements, dataset):
 
         self.measurements = measurements
         self.dataset = dataset
-        self.trap_frequency = trap_frequency
+        self.trap_frequency = self.get_average_frequency()
         self.color = dataset.color
         self.marker = dataset.marker
         self.line = dataset.line
@@ -32,11 +32,15 @@ class TemperatureScaling:
         return self.heatingrates_smooth[index]
 
 
+    def get_average_frequency(self):
+        return average_data(self.measurements).trap_frequency
+
+
     def bin_similar_temperatures(self, temperature_bin_size):
         if not self.measurements:
             return self
         data_averaged = [] # list of heating rate objects
-        for bin_min, bin_max in make_bins(self.temperatures, temperature_bin_size):
+        for bin_min, bin_max in make_bins(self.temperatures, temperature_bin_size, temperature_scaling = True):
             data_to_average = []
 
             for measurement in self.measurements:
@@ -51,29 +55,14 @@ class TemperatureScaling:
                 # add new heating rate object to new data list
                 data_averaged.append(new_data)
 
-        binned_temperature_scaling = TemperatureScaling(data_averaged, self.trap_frequency, self.dataset)
+        binned_temperature_scaling = TemperatureScaling(data_averaged, self.dataset)
 
         return binned_temperature_scaling
 
 
     def get_temperature_subset(self, temp_min, temp_max):
-        #TODO make sure added properties aren't deleted using deepcopy(object)
         measurement_subset = [measurement for measurement in self.measurements
-                       if temp_min <= measurement.temperature <= temp_max]
-        temperature_scaling_subset = TemperatureScaling(measurement_subset, self.trap_frequency, self.dataset)
+            if temp_min <= measurement.temperature <= temp_max]
+        temperature_scaling_subset = TemperatureScaling(measurement_subset, self.dataset)
         return temperature_scaling_subset
 
-
-def make_bins(list, bin_size):
-    bins = [(290, 304)] # first bin is always room temperature
-    bottom_of_bin = max(min(list), 306)
-    while bottom_of_bin < max(list):
-        top_of_bin = bottom_of_bin + bin_size
-        bins.append((bottom_of_bin, top_of_bin))
-        bottom_of_bin = top_of_bin
-    return bins
-
-
-def extract_all_temperature_scalings(Dataset):
-    #TODO: fill in
-    return
