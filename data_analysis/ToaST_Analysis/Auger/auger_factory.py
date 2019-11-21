@@ -1,1 +1,0 @@
-#TODO: import auger data with corresponding milling dose and other attributes
